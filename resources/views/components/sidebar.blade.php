@@ -40,10 +40,10 @@
         <div id="collapseManagaments" class="collapse" aria-labelledby="headingManagaments"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a href="" class="collapse-item" href="utilities-color.html">Country</a>
-                <a href="" class="collapse-item" href="utilities-border.html">State</a>
-                <a href="" class="collapse-item" href="utilities-animation.html">Department</a>
-                <a href="" class="collapse-item" href="utilities-other.html">City</a>
+                <a href="{{ route('countries.index') }}" class="collapse-item" href="utilities-color.html">Country</a>
+                <a href="{{ route('states.index') }}" class="collapse-item" href="utilities-border.html">State</a>
+                <a href="{{ route('departments.index') }}" class="collapse-item" href="utilities-animation.html">Department</a>
+                <a href="{{ route('cities.index') }}" class="collapse-item" href="utilities-other.html">City</a>
             </div>
         </div>
     </li>
