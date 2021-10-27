@@ -1,5 +1,4 @@
-@extends('layouts.app')
-@section('content')
+<x-layout>
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Create Users</h1>
     </div>
@@ -93,4 +92,6 @@
                 </form>
             </div>
     </div>
-@endsection
+
+</x-layout>
+

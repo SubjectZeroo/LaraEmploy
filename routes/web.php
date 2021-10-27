@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\ChangePasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,4 +32,5 @@ Route::middleware('auth')->group(function() {
     Route::resource('/deparments', DepartmentController::class)->names('deparments');
     Route::resource('/cities', CityController::class)->names('cities');
     Route::resource('/users', UserController::class)->names('users');
+    Route::post('users/{user}/change-password', [ChangePasswordController::class, 'change_password'])->name('users.change.password');
 });
