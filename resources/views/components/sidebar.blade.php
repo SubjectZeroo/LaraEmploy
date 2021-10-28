@@ -23,7 +23,7 @@
     <hr class="sidebar-divider">
 
     <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="/employees">
             <i class="fas fa-users"></i>
             <span>Employee Managament</span></a>
     </li>
