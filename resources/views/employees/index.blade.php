@@ -1,3 +1,3 @@
 <x-layout>
-   <employees-index></employees-index>
+  <router-view></router-view>
 </x-layout>
