@@ -19,12 +19,11 @@ class CityController extends Controller
     {
         $cities = City::all();
 
-        if($request->has('search')) {
+        if ($request->has('search')) {
             $cities = City::where('name', 'like', "%{$request->search}%")->get();
         }
 
         return view('cities.index', compact('cities'));
-
     }
 
     /**
@@ -70,7 +69,7 @@ class CityController extends Controller
     public function edit(City $city)
     {
         $states = State::all();
-        return view('cities.edit', compact('city','states'));
+        return view('cities.edit', compact('city', 'states'));
     }
 
     /**
@@ -80,7 +79,7 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCityRequest $request,City $city)
+    public function update(UpdateCityRequest $request, City $city)
     {
         $city->update($request->validated());
         return redirect()->route('cities.index')->with('message', 'City Updated Succesfully');

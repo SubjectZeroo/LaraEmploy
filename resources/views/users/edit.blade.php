@@ -1,4 +1,4 @@
-<x-layout>
+{{-- <x-layout>
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Update User</h1>
     </div>
@@ -111,4 +111,4 @@
             </form>
         </div>
     </div>
-</x-layout>
+</x-layout> --}}
