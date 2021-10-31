@@ -55,9 +55,8 @@
                     <router-link
                         :to="{ name: 'EmployeesCreate' }"
                         class="btn btn-primary"
-                        >Create</router-link
+                        >Create Employee</router-link
                     >
-                    <!-- <a href="" class="float-right btn btn-primary">Create Department</a> -->
                 </div>
             </div>
             <div class="card-body">

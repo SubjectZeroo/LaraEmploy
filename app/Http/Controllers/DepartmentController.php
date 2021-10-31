@@ -17,8 +17,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::all();
-        return view('departments.index', compact('departments'));
+        // $departments = Department::all();
+        // return view('departments.index', compact('departments'));
     }
 
     /**
@@ -28,7 +28,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('departments.create');
+        // return view('departments.create');
     }
 
     /**
@@ -39,8 +39,8 @@ class DepartmentController extends Controller
      */
     public function store(StoreDepartmentRequest $request)
     {
-        $department = Department::create($request->validated());
-        return redirect()->route('departments.index')->with('message', 'Department Register Succesfully');
+        // $department = Department::create($request->validated());
+        // return redirect()->route('departments.index')->with('message', 'Department Register Succesfully');
     }
 
     /**
@@ -62,7 +62,7 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        return view('departments.edit', compact('department'));
+        // return view('departments.edit', compact('department'));
     }
 
     /**
@@ -74,8 +74,8 @@ class DepartmentController extends Controller
      */
     public function update(UpdateDepartmentRequest $request, Department  $department)
     {
-        $department->update($request->validated());
-        return redirect()->route('departments.index')->with('message', 'Department Updated Succesfully');
+        // $department->update($request->validated());
+        // return redirect()->route('departments.index')->with('message', 'Department Updated Succesfully');
     }
 
     /**
@@ -86,7 +86,7 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        $department->delete();
-        return redirect()->route('departments.index')->with('message', 'Department Deleted Succesfully');
+        // $department->delete();
+        // return redirect()->route('departments.index')->with('message', 'Department Deleted Succesfully');
     }
 }

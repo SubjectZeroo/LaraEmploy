@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Update Employees</h1>
+            <h1 class="h3 mb-0 text-gray-800">Edit Employees</h1>
         </div>
         <div class="card">
-            <div class="card-header">Update Employee</div>
+            <div class="card-header">Edit Employee</div>
             <form @submit.prevent="updateEmployee">
                 <div class="card-body">
                     <div class="form-group">

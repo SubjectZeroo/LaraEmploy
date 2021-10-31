@@ -17,13 +17,13 @@ class CityController extends Controller
      */
     public function index(Request $request)
     {
-        $cities = City::all();
+        // $cities = City::all();
 
-        if ($request->has('search')) {
-            $cities = City::where('name', 'like', "%{$request->search}%")->get();
-        }
+        // if ($request->has('search')) {
+        //     $cities = City::where('name', 'like', "%{$request->search}%")->get();
+        // }
 
-        return view('cities.index', compact('cities'));
+        // return view('cities.index', compact('cities'));
     }
 
     /**
@@ -33,8 +33,8 @@ class CityController extends Controller
      */
     public function create()
     {
-        $states = State::all();
-        return view('cities.create', compact('states'));
+        // $states = State::all();
+        // return view('cities.create', compact('states'));
     }
 
     /**
@@ -45,8 +45,8 @@ class CityController extends Controller
      */
     public function store(StoreCityRequest $request)
     {
-        $cities = City::create($request->validated());
-        return redirect()->route('cities.index')->with('message', 'City Register Succesfully');
+        // $cities = City::create($request->validated());
+        // return redirect()->route('cities.index')->with('message', 'City Register Succesfully');
     }
 
     /**

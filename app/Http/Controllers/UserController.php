@@ -17,13 +17,13 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::all();
+        // $users = User::all();
 
-        if($request->has('search')) {
-            $users = User::where('username', 'like', "%{$request->search}%")->orWhere('email', 'like', "%{$request->search}%")->get();
-        }
+        // if ($request->has('search')) {
+        //     $users = User::where('username', 'like', "%{$request->search}%")->orWhere('email', 'like', "%{$request->search}%")->get();
+        // }
 
-        return view('users.index', compact('users'));
+        // return view('users.index', compact('users'));
     }
 
     /**
@@ -33,7 +33,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        // return view('users.create');
     }
 
     /**
@@ -44,12 +44,12 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $user = User::create(array_merge(
-            $request->validated(),
-            ['password' => Hash::make($request['password'])]
-        ));
+        // $user = User::create(array_merge(
+        //     $request->validated(),
+        //     ['password' => Hash::make($request['password'])]
+        // ));
 
-        return redirect()->route('users.index')->with('message', 'User Register Succesfully');
+        // return redirect()->route('users.index')->with('message', 'User Register Succesfully');
     }
 
     /**
@@ -71,7 +71,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        // return view('users.edit', compact('user'));
     }
 
     /**
@@ -83,8 +83,8 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->update($request->validated());
-        return redirect()->route('users.index')->with('message', 'User Updated Succesfully');
+        // $user->update($request->validated());
+        // return redirect()->route('users.index')->with('message', 'User Updated Succesfully');
     }
 
     /**
@@ -95,7 +95,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
-        return redirect()->route('users.index')->with('message', 'User Deleted Succesfully');
+        // $user->delete();
+        // return redirect()->route('users.index')->with('message', 'User Deleted Succesfully');
     }
 }

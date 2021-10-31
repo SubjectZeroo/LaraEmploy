@@ -121,7 +121,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -385,7 +384,7 @@ var render = function() {
                 staticClass: "btn btn-primary",
                 attrs: { to: { name: "EmployeesCreate" } }
               },
-              [_vm._v("Create")]
+              [_vm._v("Create Employee")]
             )
           ],
           1

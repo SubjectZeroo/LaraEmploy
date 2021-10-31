@@ -9,15 +9,27 @@
         </a>
         <hr class="sidebar-divider my-0">
         <li class="nav-item active">
-            <a class="nav-link">
+            <!-- <a class="nav-link">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
+                <span>Dashboard</span></a> -->
+            <router-link
+                        :to="{ name: 'home' }"
+                        class="nav-link">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>EDashboard</span>
+            </router-link>
         </li>
         <hr class="sidebar-divider">
         <li class="nav-item">
-            <a class="nav-link">
+            <!-- <a class="nav-link">
                 <i class="fas fa-users"></i>
-                <span>Employee Managament</span></a>
+                <span>Employee Managament</span></a> -->
+            <router-link
+                        :to="{ name: 'EmployeesIndex' }"
+                        class="nav-link">
+                         <i class="fas fa-users"></i>
+                        <span>Employee Managament</span>
+            </router-link>
         </li>
         <hr class="sidebar-divider">
         <li class="nav-item">
@@ -29,10 +41,30 @@
             <div id="collapseManagaments" class="collapse" aria-labelledby="headingManagaments"
                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a href="" class="collapse-item">Country</a>
-                    <a href="" class="collapse-item">State</a>
-                    <a href="" class="collapse-item">Department</a>
-                    <a href="" class="collapse-item">City</a>
+                    <router-link
+                        :to="{ name: 'CountriesIndex' }"
+                        class="collapse-item">
+
+                        <span>Countries</span>
+                    </router-link>
+                    <router-link
+                        :to="{ name: 'StatesIndex' }"
+                        class="collapse-item">
+
+                        <span>States</span>
+                    </router-link>
+                    <router-link
+                        :to="{ name: 'CitiesIndex' }"
+                        class="collapse-item">
+
+                        <span>Cities</span>
+                    </router-link>
+                    <router-link
+                        :to="{ name: 'DepartmentsIndex' }"
+                        class="collapse-item">
+
+                        <span>Departments</span>
+                    </router-link>
                 </div>
             </div>
         </li>
@@ -46,9 +78,14 @@
             <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a href="" class="collapse-item">User</a>
+                     <router-link
+                        :to="{ name: 'UsersIndex' }"
+                        class="collapse-item">
+                        <span>Users</span>
+                    </router-link>
+                    <!-- <a href="" class="collapse-item">User</a>
                     <a href="" class="collapse-item">Role</a>
-                    <a href="" class="collapse-item">Permission</a>
+                    <a href="" class="collapse-item">Permission</a> -->
                 </div>
             </div>
         </li>

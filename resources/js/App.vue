@@ -4,7 +4,10 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <Navbar></Navbar>
-                <router-view></router-view>
+                <div class="container-fluid">
+                     <router-view></router-view>
+                </div>
+
             </div>
             <Footer></Footer>
         </div>

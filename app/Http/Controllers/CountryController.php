@@ -16,12 +16,12 @@ class CountryController extends Controller
      */
     public function index(Request $request)
     {
-        $countries = Country::all();
+        // $countries = Country::all();
 
-        if($request->has('search')) {
-            $countries = Country::where('name', 'like', "%{$request->search}%")->orWhere('country_code', 'like', "%{$request->search}%")->get();
-        }
-        return view('countries.index', compact('countries'));
+        // if($request->has('search')) {
+        //     $countries = Country::where('name', 'like', "%{$request->search}%")->orWhere('country_code', 'like', "%{$request->search}%")->get();
+        // }
+        // return view('countries.index', compact('countries'));
     }
 
     /**
@@ -31,7 +31,7 @@ class CountryController extends Controller
      */
     public function create()
     {
-        return view('countries.create');
+        // return view('countries.create');
     }
 
     /**
@@ -42,8 +42,8 @@ class CountryController extends Controller
      */
     public function store(StoreCountryRequest $request)
     {
-        $country = Country::create($request->validated());
-        return redirect()->route('countries.index')->with('message', 'Country Register Succesfully');
+        // $country = Country::create($request->validated());
+        // return redirect()->route('countries.index')->with('message', 'Country Register Succesfully');
     }
 
     /**
@@ -65,7 +65,7 @@ class CountryController extends Controller
      */
     public function edit(Country $country)
     {
-        return view('countries.edit', compact('country'));
+        // return view('countries.edit', compact('country'));
     }
 
     /**
@@ -75,10 +75,10 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCountryRequest $request,Country $country)
+    public function update(UpdateCountryRequest $request, Country $country)
     {
-        $country->update($request->validated());
-        return redirect()->route('countries.index')->with('message', 'Country Updated Succesfully');
+        // $country->update($request->validated());
+        // return redirect()->route('countries.index')->with('message', 'Country Updated Succesfully');
     }
 
     /**
@@ -89,7 +89,7 @@ class CountryController extends Controller
      */
     public function destroy(Country $country)
     {
-        $country->delete();
-        return redirect()->route('countries.index')->with('message', 'Country Deleted Succesfully');
+        // $country->delete();
+        // return redirect()->route('countries.index')->with('message', 'Country Deleted Succesfully');
     }
 }

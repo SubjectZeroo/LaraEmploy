@@ -69,6 +69,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'sidebar'
 });
@@ -159,7 +196,155 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "ul",
+    {
+      staticClass:
+        "navbar-nav bg-gradient-primary sidebar sidebar-dark accordion",
+      attrs: { id: "accordionSidebar" }
+    },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("hr", { staticClass: "sidebar-divider my-0" }),
+      _vm._v(" "),
+      _c(
+        "li",
+        { staticClass: "nav-item active" },
+        [
+          _c(
+            "router-link",
+            { staticClass: "nav-link", attrs: { to: { name: "home" } } },
+            [
+              _c("i", { staticClass: "fas fa-fw fa-tachometer-alt" }),
+              _vm._v(" "),
+              _c("span", [_vm._v("EDashboard")])
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("hr", { staticClass: "sidebar-divider" }),
+      _vm._v(" "),
+      _c(
+        "li",
+        { staticClass: "nav-item" },
+        [
+          _c(
+            "router-link",
+            {
+              staticClass: "nav-link",
+              attrs: { to: { name: "EmployeesIndex" } }
+            },
+            [
+              _c("i", { staticClass: "fas fa-users" }),
+              _vm._v(" "),
+              _c("span", [_vm._v("Employee Managament")])
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("hr", { staticClass: "sidebar-divider" }),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "collapse",
+            attrs: {
+              id: "collapseManagaments",
+              "aria-labelledby": "headingManagaments",
+              "data-parent": "#accordionSidebar"
+            }
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "bg-white py-2 collapse-inner rounded" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "collapse-item",
+                    attrs: { to: { name: "CountriesIndex" } }
+                  },
+                  [_c("span", [_vm._v("Countries")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "collapse-item",
+                    attrs: { to: { name: "StatesIndex" } }
+                  },
+                  [_c("span", [_vm._v("States")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "collapse-item",
+                    attrs: { to: { name: "CitiesIndex" } }
+                  },
+                  [_c("span", [_vm._v("Cities")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "collapse-item",
+                    attrs: { to: { name: "DepartmentsIndex" } }
+                  },
+                  [_c("span", [_vm._v("Departments")])]
+                )
+              ],
+              1
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("hr", { staticClass: "sidebar-divider d-none d-md-block" }),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _vm._m(2),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "collapse",
+            attrs: {
+              id: "collapseUtilities",
+              "aria-labelledby": "headingUtilities",
+              "data-parent": "#accordionSidebar"
+            }
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "bg-white py-2 collapse-inner rounded" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "collapse-item",
+                    attrs: { to: { name: "UsersIndex" } }
+                  },
+                  [_c("span", [_vm._v("Users")])]
+                )
+              ],
+              1
+            )
+          ]
+        )
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -167,177 +352,67 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "ul",
+      "a",
       {
         staticClass:
-          "navbar-nav bg-gradient-primary sidebar sidebar-dark accordion",
-        attrs: { id: "accordionSidebar" }
+          "sidebar-brand d-flex align-items-center justify-content-center",
+        attrs: { href: "index.html" }
       },
       [
-        _c(
-          "a",
-          {
-            staticClass:
-              "sidebar-brand d-flex align-items-center justify-content-center",
-            attrs: { href: "index.html" }
-          },
-          [
-            _c("div", { staticClass: "sidebar-brand-icon rotate-n-15" }, [
-              _c("i", { staticClass: "fas fa-laugh-wink" })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "sidebar-brand-text mx-3" }, [
-              _vm._v("SB Admin "),
-              _c("sup", [_vm._v("2")])
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c("hr", { staticClass: "sidebar-divider my-0" }),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item active" }, [
-          _c("a", { staticClass: "nav-link" }, [
-            _c("i", { staticClass: "fas fa-fw fa-tachometer-alt" }),
-            _vm._v(" "),
-            _c("span", [_vm._v("Dashboard")])
-          ])
+        _c("div", { staticClass: "sidebar-brand-icon rotate-n-15" }, [
+          _c("i", { staticClass: "fas fa-laugh-wink" })
         ]),
         _vm._v(" "),
-        _c("hr", { staticClass: "sidebar-divider" }),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c("a", { staticClass: "nav-link" }, [
-            _c("i", { staticClass: "fas fa-users" }),
-            _vm._v(" "),
-            _c("span", [_vm._v("Employee Managament")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("hr", { staticClass: "sidebar-divider" }),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link collapsed",
-              attrs: {
-                href: "#",
-                "data-toggle": "collapse",
-                "data-target": "#collapseManagaments",
-                "aria-expanded": "true",
-                "aria-controls": "collapseManagaments"
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-fw fa-wrench" }),
-              _vm._v(" "),
-              _c("span", [_vm._v("System Management")])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "collapse",
-              attrs: {
-                id: "collapseManagaments",
-                "aria-labelledby": "headingManagaments",
-                "data-parent": "#accordionSidebar"
-              }
-            },
-            [
-              _c(
-                "div",
-                { staticClass: "bg-white py-2 collapse-inner rounded" },
-                [
-                  _c(
-                    "a",
-                    { staticClass: "collapse-item", attrs: { href: "" } },
-                    [_vm._v("Country")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    { staticClass: "collapse-item", attrs: { href: "" } },
-                    [_vm._v("State")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    { staticClass: "collapse-item", attrs: { href: "" } },
-                    [_vm._v("Department")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    { staticClass: "collapse-item", attrs: { href: "" } },
-                    [_vm._v("City")]
-                  )
-                ]
-              )
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("hr", { staticClass: "sidebar-divider d-none d-md-block" }),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link collapsed",
-              attrs: {
-                href: "#",
-                "data-toggle": "collapse",
-                "data-target": "#collapseUtilities",
-                "aria-expanded": "true",
-                "aria-controls": "collapseUtilities"
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-users-cog" }),
-              _vm._v(" "),
-              _c("span", [_vm._v("User Managament")])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "collapse",
-              attrs: {
-                id: "collapseUtilities",
-                "aria-labelledby": "headingUtilities",
-                "data-parent": "#accordionSidebar"
-              }
-            },
-            [
-              _c(
-                "div",
-                { staticClass: "bg-white py-2 collapse-inner rounded" },
-                [
-                  _c(
-                    "a",
-                    { staticClass: "collapse-item", attrs: { href: "" } },
-                    [_vm._v("User")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    { staticClass: "collapse-item", attrs: { href: "" } },
-                    [_vm._v("Role")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    { staticClass: "collapse-item", attrs: { href: "" } },
-                    [_vm._v("Permission")]
-                  )
-                ]
-              )
-            ]
-          )
+        _c("div", { staticClass: "sidebar-brand-text mx-3" }, [
+          _vm._v("SB Admin "),
+          _c("sup", [_vm._v("2")])
         ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "nav-link collapsed",
+        attrs: {
+          href: "#",
+          "data-toggle": "collapse",
+          "data-target": "#collapseManagaments",
+          "aria-expanded": "true",
+          "aria-controls": "collapseManagaments"
+        }
+      },
+      [
+        _c("i", { staticClass: "fas fa-fw fa-wrench" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("System Management")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "nav-link collapsed",
+        attrs: {
+          href: "#",
+          "data-toggle": "collapse",
+          "data-target": "#collapseUtilities",
+          "aria-expanded": "true",
+          "aria-controls": "collapseUtilities"
+        }
+      },
+      [
+        _c("i", { staticClass: "fas fa-users-cog" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("User Managament")])
       ]
     )
   }
