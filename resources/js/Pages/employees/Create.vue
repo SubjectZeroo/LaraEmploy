@@ -5,163 +5,181 @@
         </div>
         <div class="card">
             <div class="card-header">Create Employee</div>
-            <form @submit.prevent="storeEmployee" @keydown="errors.clear($event.target.name)">
+            <form @submit.prevent="storeEmployee" @keydown="form.errors.clear($event.target.name)">
                 <div class="card-body">
-                    <div class="form-group">
-                        <label for="firts_name">Firts Name</label>
-                        <input
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                             <label for="firts_name">Firts Name</label>
+                            <input
                             v-model="form.firts_name"
                             type="text"
                             class="form-control"
-                            name="firts_name"
+                            name="firts_name"/>
+                            <!-- <input
+                                v-model="form.firts_name"
+                                @keydown="errors.clear('firts_name')"
+                                type="text"
+                                class="form-control"
+                                name="firts_name"
 
-                        />
-                        <!-- <input
-                            v-model="form.firts_name"
-                            @keydown="errors.clear('firts_name')"
-                            type="text"
-                            class="form-control"
-                            name="firts_name"
+                            /> -->
+                            <div class="help is-danger"
+                            v-if="form.errors.has('firts_name')"
+                            v-text="form.errors.get('firts_name')"></div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="last_name">Last Name</label>
+                            <input
+                                v-model="form.last_name"
+                                type="text"
+                                class="form-control"
+                                name="last_name"
 
-                        /> -->
-                        <div class="help is-danger"
-                        v-if="errors.has('firts_name')"
-                        v-text="errors.get('firts_name')"></div>
+                            />
+                            <div class="help is-danger" v-if="form.errors.has('last_name')" v-text="form.errors.get('last_name')"></div>
+                        </div>
+                        <div class="form-group col-md-4">
+                             <label for="middle_name">Middle Name</label>
+                            <input
+                                v-model="form.middle_name"
+                                type="text"
+                                class="form-control"
+                                name="middle_name"
+
+                            />
+                            <div class="help is-danger" v-text="form.errors.get('middle_name')"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="last_name">Last Name</label>
-                        <input
-                            v-model="form.last_name"
-                            type="text"
-                            class="form-control"
-                            name="last_name"
+                    <div class="form-row">
 
-                        />
-                        <div class="help is-danger" v-if="errors.has('last_name')" v-text="errors.get('last_name')"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="middle_name">Middle Name</label>
-                        <input
-                            v-model="form.middle_name"
-                            type="text"
-                            class="form-control"
-                            name="middle_name"
+                        <div class="form-group col-md-12">
+                             <label for="address">Address</label>
+                            <input
+                                v-model="form.address"
+                                type="text"
+                                class="form-control"
+                                name="address"
 
-                        />
-                         <div class="help is-danger" v-text="errors.get('middle_name')"></div>
+                            />
+                            <div class="help is-danger" v-if="form.errors.has('address')" v-text="form.errors.get('address')"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input
-                            v-model="form.address"
-                            type="text"
-                            class="form-control"
-                            name="address"
-
-                        />
-                        <div class="help is-danger" v-if="errors.has('address')" v-text="errors.get('address')"></div>
+                    <div class="form-row">
+                         <div class="form-group col-md-12">
+                            <label for="department_id">Department</label>
+                            <select
+                                v-model="form.department_id"
+                                @change="getDepartments()"
+                                class="custom-select"
+                                name="department">
+                                <option
+                                    v-for="department in departments"
+                                    :key="department.id"
+                                    :value="department.id">
+                                    {{ department.name }}
+                                </option>
+                            </select>
+                            <div class="help is-danger" v-if="form.errors.has('department_id')" v-text="form.errors.get('department_id')"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="department_id">Department</label>
-                        <select
-                            v-model="form.department_id"
-                            @change="getDepartments()"
-                            class="custom-select"
-                            name="department"
-                        >
-                            <option
-                                v-for="department in departments"
-                                :key="department.id"
-                                :value="department.id"
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="country_id">Countries</label>
+                            <select
+                                v-model="form.country_id"
+                                @change="getStates()"
+                                class="custom-select"
+                                name="country"
+                                aria-label="Default Select example"
                             >
-                                {{ department.name }}
-                            </option>
-                        </select>
-                        <div class="help is-danger" v-if="errors.has('department_id')" v-text="errors.get('department_id')"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="country_id">Countries</label>
-                        <select
-                            v-model="form.country_id"
-                            @change="getStates()"
-                            class="custom-select"
-                            name="country"
-                            aria-label="Default Select example"
-                        >
-                            <option
-                                v-for="country in countries"
-                                :key="country.id"
-                                :value="country.id"
+                                <option
+                                    v-for="country in countries"
+                                    :key="country.id"
+                                    :value="country.id"
+                                >
+                                    {{ country.name }}
+                                </option>
+                            </select>
+                            <div class="help is-danger" v-if="form.errors.has('country_id')" v-text="form.errors.get('country_id')"></div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="state_id">States</label>
+                            <select
+                                v-model="form.state_id"
+                                @change="getCities()"
+                                class="custom-select"
+                                name="state"
                             >
-                                {{ country.name }}
-                            </option>
-                        </select>
-                         <div class="help is-danger" v-if="errors.has('country_id')" v-text="errors.get('country_id')"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="state_id">States</label>
-                        <select
-                            v-model="form.state_id"
-                            @change="getCities()"
-                            class="custom-select"
-                            name="state"
-                        >
-                            <option
-                                v-for="state in states"
-                                :key="state.id"
-                                :value="state.id"
+                                <option
+                                    v-for="state in states"
+                                    :key="state.id"
+                                    :value="state.id"
+                                >
+                                    {{ state.name }}
+                                </option>
+                            </select>
+                            <div class="help is-danger" v-if="form.errors.has('state_id')" v-text="form.errors.get('state_id')"></div>
+                        </div>
+                        <div class="form-group col-md-4">
+                             <label for="city_id">City</label>
+                            <select
+                                v-model="form.city_id"
+                                class="custom-select"
+                                name="city"
                             >
-                                {{ state.name }}
-                            </option>
-                        </select>
-                        <div class="help is-danger" v-if="errors.has('state_id')" v-text="errors.get('state_id')"></div>
+                                <option
+                                    v-for="city in cities"
+                                    :key="city.id"
+                                    :value="city.id"
+                                >
+                                    {{ city.name }}
+                                </option>
+                            </select>
+                            <div class="help is-danger" v-if="form.errors.has('city_id')" v-text="form.errors.get('city_id')"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="city_id">City</label>
-                        <select
-                            v-model="form.city_id"
-                            class="custom-select"
-                            name="city"
-                        >
-                            <option
-                                v-for="city in cities"
-                                :key="city.id"
-                                :value="city.id"
-                            >
-                                {{ city.name }}
-                            </option>
-                        </select>
-                        <div class="help is-danger" v-if="errors.has('city_id')" v-text="errors.get('city_id')"></div>
+                     <div class="form-row">
+                         <div class="form-group col-md-4">
+                            <label for="zip_Code">Zip Code</label>
+                            <input
+                                v-model="form.zip_code"
+                                type="text"
+                                class="form-control"
+                                name="zip_code"
+                            />
+                            <div class="help is-danger" v-if="form.errors.has('zip_code')" v-text="form.errors.get('zip_code')"></div>
+                        </div>
+                        <div class="form-group col-md-4">
+                             <div class="mb-2">Birthdate</div>
+                            <date-picker input-class="form-control" v-model="form.birthdate" valueType="format" :placeholder="'Select Birthdate'"  style="width: 100%;"></date-picker>
+                            <div class="help is-danger" v-if="form.errors.has('birthdate')" v-text="form.errors.get('birthdate')"  ></div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <div class="mb-2">Date Hired</div>
+                            <date-picker input-class="form-control" v-model="form.date_hired" valueType="format" :placeholder="'Select Date Hired'" id="date_hired"  style="width: 100%;"></date-picker>
+                            <div class="help is-danger" v-if="form.errors.has('date_hired')" v-text="form.errors.get('date_hired')" width="500"></div>
+                        </div>
+                     </div>
+                    <!-- <div class="form-group">
+
                     </div>
-                    <div class="form-group">
-                        <label for="zip_Code">Zip Code</label>
-                        <input
-                            v-model="form.zip_code"
-                            type="text"
-                            class="form-control"
-                            name="zip_code"
-                        />
-                        <div class="help is-danger" v-if="errors.has('zip_code')" v-text="errors.get('zip_code')"></div>
-                    </div>
-                    <div class="form-group">
+                    <section>
+                         <p>Birthdate</p>
+                         <date-picker v-model="form.birthdate" valueType="format"></date-picker>
+                         <div class="help is-danger" v-if="form.errors.has('birthdate')" v-text="form.errors.get('birthdate')"></div>
+                    </section> -->
+                    <!-- <div class="form-group">
                         <label for="birthdate">Birthdate</label>
-                        <datepicker
-                            v-model="form.birthdate"
-                            input-class="form-control"
-                        ></datepicker>
-                         <div class="help is-danger" v-if="errors.has('birthdate')" v-text="errors.get('birthdate')"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="date_hired">Date Hired</label>
-                        <datepicker
-                            v-model="form.date_hired"
-                            input-class="form-control"
-                        ></datepicker>
-                        <div class="help is-danger" v-if="errors.has('date_hired')" v-text="errors.get('date_hired')"></div>
-                    </div>
+
+                    </div> -->
+                    <!-- <section>
+                        <p>Date Hired</p>
+                        <date-picker input-class="form-control" v-model="form.date_hired" valueType="format"></date-picker>
+                        <div class="help is-danger" v-if="form.errors.has('date_hired')" v-text="form.errors.get('date_hired')"></div>
+                    </section> -->
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary" :disabled="errors.any()">
+                    <button type="submit" class="btn btn-primary" :disabled="form.errors.any()">
                         Create Employee
                     </button>
                     <router-link
@@ -176,8 +194,8 @@
     </div>
 </template>
 <script>
-import Datepicker from "vuejs-datepicker";
-import moment from "moment";
+  import DatePicker from 'vue2-datepicker';
+  import 'vue2-datepicker/index.css';
 
 class Errors {
 
@@ -207,19 +225,141 @@ class Errors {
 
     record(errors) {
 
-        this.errors = errors;
+        this.errors = errors.errors;
 
     }
 
     clear(field) {
-        delete this.errors[field];
+
+        if(field) {
+            delete this.errors[field];
+
+            return;
+        }
+
+        this.errors ={};
+
     }
 
 }
 
+
+class Form {
+
+    constructor(data) {
+
+        this.originalData = data;
+
+        for (let field in data) {
+
+            this[field] = data[field];
+
+        }
+
+        this.errors = new Errors();
+    }
+    /**
+     * Fetch all relevant data for the form
+     */
+
+    data() {
+
+        //   let data =  Object.assign({}, this);
+
+        //   delete data.originalData;
+        //   delete data.errors;
+
+        letdata = {};
+
+        for (let property in this.originalData) {
+
+            data[property] = this[property];
+
+        }
+
+        return data;
+
+    }
+
+
+    /**
+     *  Reset the form fields
+     */
+
+    reset() {
+
+       for (let field in this.originalData) {
+
+           this[field] = ''
+       }
+
+         this.errors.clear();
+
+    }
+
+    /**
+     * Submit the form
+     *
+     * @param {string} requestType
+     * @param {string} url
+     */
+
+    submit(requestType, url) {
+
+        return new Promise((resolve, reject) => {
+            axios[requestType](url, this.data())
+            // .then(response => {
+            //     this.$router.push({ name: "EmployeesIndex" });
+            // })
+            .then(response => {
+
+                this.onSuccess(response.data);
+
+                resolve(response.data);
+
+            })
+            .catch(error => {
+
+                this.onFail(error.response.data);
+
+                reject(error.response.data);
+
+            });
+
+        });
+
+    }
+    /**
+     * Handle a succesful form submission.
+     *
+     * @param {object} data
+     *
+     */
+
+    onSuccess(data) {
+
+        alert(data.message); //temporary
+
+
+        this.reset();
+
+    }
+
+    /**
+     * Handle a failed form submission.
+     *
+     * @param {object} errors
+     *
+     */
+
+    onFail(errors) {
+        this.errors.record(errors);
+    }
+}
+
 export default {
     components: {
-        Datepicker
+        DatePicker
     },
     data() {
         return {
@@ -227,21 +367,19 @@ export default {
             states: [],
             departments: [],
             cities: [],
-            form: {
-                firts_name: "",
-                last_name: "",
-                middle_name: "",
-                address: "",
-                country_id: "",
-                state_id: "",
-                department_id: "",
-                city_id: "",
-                zip_code: "",
+            form: new Form({
+                firts_name: '',
+                last_name: '',
+                middle_name: '',
+                address: '',
+                country_id: '',
+                state_id: '',
+                department_id: '',
+                city_id: '',
+                zip_code: '',
                 birthdate: null,
                 date_hired: null,
-
-            },
-             errors: new Errors()
+            })
         };
     },
     created() {
@@ -292,29 +430,9 @@ export default {
         },
 
         storeEmployee() {
-            axios
-                .post("/api/employees", {
-                    firts_name: this.form.firts_name,
-                    last_name: this.form.last_name,
-                    middle_name: this.form.middle_name,
-                    address: this.form.address,
-                    department_id: this.form.department_id,
-                    country_id: this.form.country_id,
-                    state_id: this.form.state_id,
-                    city_id: this.form.city_id,
-                    zip_code: this.form.zip_code,
-                    birthdate: this.format_date(this.form.birthdate),
-                    date_hired: this.format_date(this.form.date_hired)
-                })
-                // .then(response => {
-                //     this.$router.push({ name: "EmployeesIndex" });
-                // })
-                .then(this.onSucess)
-                .catch(error => this.errors.record(error.response.data.errors));
-        },
-        onSucess(response) {
-            alert(response.data.message);
-            form.reset();
+            this.form.submit('post', '/api/employees')
+                .then(data => console.log(data))
+                .catch(errors => console.log(errors));
         },
         format_date(value) {
             if (value) {
