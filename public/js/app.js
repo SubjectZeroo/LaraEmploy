@@ -37786,11 +37786,8 @@ var render = function() {
               )
             ],
             1
-          ),
-          _vm._v(" "),
-          _c("Footer")
-        ],
-        1
+          )
+        ]
       )
     ],
     1

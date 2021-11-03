@@ -14,6 +14,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -180,6 +198,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
+var Errors = /*#__PURE__*/function () {
+  function Errors() {
+    _classCallCheck(this, Errors);
+
+    this.errors = {};
+  }
+
+  _createClass(Errors, [{
+    key: "has",
+    value: function has(field) {
+      return this.errors.hasOwnProperty(field);
+    }
+  }, {
+    key: "any",
+    value: function any() {
+      return Object.keys(this.errors).length > 0;
+    }
+  }, {
+    key: "get",
+    value: function get(field) {
+      if (this.errors[field]) {
+        return this.errors[field][0];
+      }
+    }
+  }, {
+    key: "record",
+    value: function record(errors) {
+      this.errors = errors;
+    }
+  }, {
+    key: "clear",
+    value: function clear(field) {
+      delete this.errors[field];
+    }
+  }]);
+
+  return Errors;
+}();
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -203,7 +261,8 @@ __webpack_require__.r(__webpack_exports__);
         zip_code: "",
         birthdate: null,
         date_hired: null
-      }
+      },
+      errors: new Errors()
     };
   },
   created: function created() {
@@ -262,11 +321,16 @@ __webpack_require__.r(__webpack_exports__);
         zip_code: this.form.zip_code,
         birthdate: this.format_date(this.form.birthdate),
         date_hired: this.format_date(this.form.date_hired)
-      }).then(function (res) {
-        _this5.$router.push({
-          name: "EmployeesIndex"
-        });
+      }) // .then(response => {
+      //     this.$router.push({ name: "EmployeesIndex" });
+      // })
+      .then(this.onSucess)["catch"](function (error) {
+        return _this5.errors.record(error.response.data.errors);
       });
+    },
+    onSucess: function onSucess(response) {
+      alert(response.data.message);
+      form.reset();
     },
     format_date: function format_date(value) {
       if (value) {
@@ -21813,6 +21877,9 @@ var render = function() {
             submit: function($event) {
               $event.preventDefault()
               return _vm.storeEmployee.apply(null, arguments)
+            },
+            keydown: function($event) {
+              return _vm.errors.clear($event.target.name)
             }
           }
         },
@@ -21833,7 +21900,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text", name: "firts_name", value: "" },
+                attrs: { type: "text", name: "firts_name" },
                 domProps: { value: _vm.form.firts_name },
                 on: {
                   input: function($event) {
@@ -21843,7 +21910,16 @@ var render = function() {
                     _vm.$set(_vm.form, "firts_name", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.has("firts_name")
+                ? _c("div", {
+                    staticClass: "help is-danger",
+                    domProps: {
+                      textContent: _vm._s(_vm.errors.get("firts_name"))
+                    }
+                  })
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -21861,7 +21937,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text", name: "last_name", value: "" },
+                attrs: { type: "text", name: "last_name" },
                 domProps: { value: _vm.form.last_name },
                 on: {
                   input: function($event) {
@@ -21871,7 +21947,16 @@ var render = function() {
                     _vm.$set(_vm.form, "last_name", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.has("last_name")
+                ? _c("div", {
+                    staticClass: "help is-danger",
+                    domProps: {
+                      textContent: _vm._s(_vm.errors.get("last_name"))
+                    }
+                  })
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -21889,7 +21974,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text", name: "middle_name", value: "" },
+                attrs: { type: "text", name: "middle_name" },
                 domProps: { value: _vm.form.middle_name },
                 on: {
                   input: function($event) {
@@ -21899,6 +21984,11 @@ var render = function() {
                     _vm.$set(_vm.form, "middle_name", $event.target.value)
                   }
                 }
+              }),
+              _vm._v(" "),
+              _c("div", {
+                staticClass: "help is-danger",
+                domProps: { textContent: _vm._s(_vm.errors.get("middle_name")) }
               })
             ]),
             _vm._v(" "),
@@ -21915,7 +22005,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text", name: "address", value: "" },
+                attrs: { type: "text", name: "address" },
                 domProps: { value: _vm.form.address },
                 on: {
                   input: function($event) {
@@ -21925,7 +22015,14 @@ var render = function() {
                     _vm.$set(_vm.form, "address", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.has("address")
+                ? _c("div", {
+                    staticClass: "help is-danger",
+                    domProps: { textContent: _vm._s(_vm.errors.get("address")) }
+                  })
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -21945,7 +22042,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "custom-select",
-                  attrs: { name: "department_id" },
+                  attrs: { name: "department" },
                   on: {
                     change: [
                       function($event) {
@@ -21985,7 +22082,16 @@ var render = function() {
                   )
                 }),
                 0
-              )
+              ),
+              _vm._v(" "),
+              _vm.errors.has("department_id")
+                ? _c("div", {
+                    staticClass: "help is-danger",
+                    domProps: {
+                      textContent: _vm._s(_vm.errors.get("department_id"))
+                    }
+                  })
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -22048,7 +22154,16 @@ var render = function() {
                   )
                 }),
                 0
-              )
+              ),
+              _vm._v(" "),
+              _vm.errors.has("country_id")
+                ? _c("div", {
+                    staticClass: "help is-danger",
+                    domProps: {
+                      textContent: _vm._s(_vm.errors.get("country_id"))
+                    }
+                  })
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -22106,7 +22221,16 @@ var render = function() {
                   )
                 }),
                 0
-              )
+              ),
+              _vm._v(" "),
+              _vm.errors.has("state_id")
+                ? _c("div", {
+                    staticClass: "help is-danger",
+                    domProps: {
+                      textContent: _vm._s(_vm.errors.get("state_id"))
+                    }
+                  })
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -22159,7 +22283,14 @@ var render = function() {
                   )
                 }),
                 0
-              )
+              ),
+              _vm._v(" "),
+              _vm.errors.has("city_id")
+                ? _c("div", {
+                    staticClass: "help is-danger",
+                    domProps: { textContent: _vm._s(_vm.errors.get("city_id")) }
+                  })
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -22185,7 +22316,16 @@ var render = function() {
                     _vm.$set(_vm.form, "zip_code", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.has("zip_code")
+                ? _c("div", {
+                    staticClass: "help is-danger",
+                    domProps: {
+                      textContent: _vm._s(_vm.errors.get("zip_code"))
+                    }
+                  })
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c(
@@ -22205,7 +22345,16 @@ var render = function() {
                     },
                     expression: "form.birthdate"
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.errors.has("birthdate")
+                  ? _c("div", {
+                      staticClass: "help is-danger",
+                      domProps: {
+                        textContent: _vm._s(_vm.errors.get("birthdate"))
+                      }
+                    })
+                  : _vm._e()
               ],
               1
             ),
@@ -22227,7 +22376,16 @@ var render = function() {
                     },
                     expression: "form.date_hired"
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.errors.has("date_hired")
+                  ? _c("div", {
+                      staticClass: "help is-danger",
+                      domProps: {
+                        textContent: _vm._s(_vm.errors.get("date_hired"))
+                      }
+                    })
+                  : _vm._e()
               ],
               1
             )
@@ -22239,7 +22397,10 @@ var render = function() {
             [
               _c(
                 "button",
-                { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "submit", disabled: _vm.errors.any() }
+                },
                 [
                   _vm._v(
                     "\n                    Create Employee\n                "
