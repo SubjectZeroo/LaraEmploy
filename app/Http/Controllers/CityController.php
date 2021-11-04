@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCityRequest;
 use App\Http\Requests\UpdateCityRequest;
+use App\Http\Resources\CityResource;
+use App\Http\Resources\CitySingleResource;
 use App\Models\City;
 use App\Models\State;
 use Illuminate\Http\Request;
@@ -17,25 +19,15 @@ class CityController extends Controller
      */
     public function index(Request $request)
     {
-        // $cities = City::all();
+        $cities = City::all();
 
-        // if ($request->has('search')) {
-        //     $cities = City::where('name', 'like', "%{$request->search}%")->get();
-        // }
+        if ($request->has('search')) {
+            $cities = City::where('name', 'like', "%{$request->search}%")->get();
+        }
 
-        // return view('cities.index', compact('cities'));
+        return CityResource::collection($cities);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // $states = State::all();
-        // return view('cities.create', compact('states'));
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -45,8 +37,8 @@ class CityController extends Controller
      */
     public function store(StoreCityRequest $request)
     {
-        // $cities = City::create($request->validated());
-        // return redirect()->route('cities.index')->with('message', 'City Register Succesfully');
+        $cities = City::create($request->validated());
+        return response()->json($cities);
     }
 
     /**
@@ -55,21 +47,9 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(City $city)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(City $city)
-    {
-        $states = State::all();
-        return view('cities.edit', compact('city', 'states'));
+        return new CitySingleResource($city);
     }
 
     /**
@@ -82,7 +62,6 @@ class CityController extends Controller
     public function update(UpdateCityRequest $request, City $city)
     {
         $city->update($request->validated());
-        return redirect()->route('cities.index')->with('message', 'City Updated Succesfully');
     }
 
     /**
@@ -94,6 +73,6 @@ class CityController extends Controller
     public function destroy(City $city)
     {
         $city->delete();
-        return redirect()->route('cities.index')->with('message', 'City Deleted Succesfully');
+        return response()->json('Deleted');
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
+use App\Http\Resources\DepartmentResource;
+use App\Http\Resources\DepartmentSingleResource;
 use App\Models\Department;
 use App\Models\State;
 use Illuminate\Http\Request;
@@ -17,18 +19,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        // $departments = Department::all();
-        // return view('departments.index', compact('departments'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // return view('departments.create');
+        $departments = Department::all();
+        return DepartmentResource::collection($departments);
     }
 
     /**
@@ -39,8 +31,8 @@ class DepartmentController extends Controller
      */
     public function store(StoreDepartmentRequest $request)
     {
-        // $department = Department::create($request->validated());
-        // return redirect()->route('departments.index')->with('message', 'Department Register Succesfully');
+        $department = Department::create($request->validated());
+        return ['message' => 'Department Store!'];
     }
 
     /**
@@ -49,21 +41,11 @@ class DepartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Department $department)
     {
-        //
+        return new DepartmentSingleResource($department);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Department $department)
-    {
-        // return view('departments.edit', compact('department'));
-    }
 
     /**
      * Update the specified resource in storage.
@@ -74,8 +56,8 @@ class DepartmentController extends Controller
      */
     public function update(UpdateDepartmentRequest $request, Department  $department)
     {
-        // $department->update($request->validated());
-        // return redirect()->route('departments.index')->with('message', 'Department Updated Succesfully');
+        $department->update($request->validated());
+        return ['message' => 'Department Updated!'];
     }
 
     /**
@@ -86,7 +68,7 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        // $department->delete();
-        // return redirect()->route('departments.index')->with('message', 'Department Deleted Succesfully');
+        $department->delete();
+        return response()->json('Deleted');
     }
 }

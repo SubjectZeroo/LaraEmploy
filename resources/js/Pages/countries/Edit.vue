@@ -1,23 +1,21 @@
 <template>
    <div>
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Edut Country</h1>
+            <h1 class="h3 mb-0 text-gray-800">Edit Country</h1>
         </div>
         <div class="card">
              <div class="card-header">Edit Country</div>
-            <form >
+            <form @submit.prevent="updateCountry">
                 <div class="card-body">
-                        <div class="form-group row">
-                            <label for="country_code" class="col-md-4 col-form-label text-md-right">Country Code</label>
-                            <div class="col-md-6">
-                                <input id="country_code" type="text" class="form-control" name="country_code" value="" required autocomplete="country_code" autofocus>
-                            </div>
+                        <div class="form-group">
+                            <label for="country_code">Country Code</label>
+                            <input id="country_code" type="text" class="form-control" name="country_code" v-model="form.country_code">
                         </div>
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">Country Name</label>
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" required autocomplete="name" autofocus>
-                            </div>
+                            <label for="name">Country Name</label>
+
+                                <input id="name" type="text" class="form-control" name="name" v-model="form.name">
+
                         </div>
                 </div>
                 <div class="card-footer">
@@ -38,7 +36,41 @@
 <script>
 export default {
 
-}
+    data() {
+        return {
+            form: {
+               country_code: '',
+               name: '',
+            }
+        };
+    },
+ created() {
+
+        this.getCountry();
+    },
+    methods: {
+        getCountry() {
+            axios
+                .get("/api/countries/" + this.$route.params.id)
+                .then(res => {
+                    this.form = res.data.data;
+                })
+                .catch(error => {
+                    console.log(console.error);
+                });
+        },
+        updateCountry() {
+            axios
+                .put("/api/countries/" + this.$route.params.id, {
+                    country_code: this.form.country_code,
+                    name: this.form.name,
+                })
+                .then(res => {
+                    this.$router.push({ name: "CountriesIndex" });
+                });
+        },
+    }
+};
 </script>
 
 <style>

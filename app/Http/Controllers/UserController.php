@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserSingleResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -17,24 +19,16 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        // $users = User::all();
+        $users = User::all();
 
-        // if ($request->has('search')) {
-        //     $users = User::where('username', 'like', "%{$request->search}%")->orWhere('email', 'like', "%{$request->search}%")->get();
-        // }
+        if ($request->has('search')) {
+            $users = User::where('username', 'like', "%{$request->search}%")->orWhere('email', 'like', "%{$request->search}%")->get();
+        }
 
-        // return view('users.index', compact('users'));
+        return UserResource::collection($users);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // return view('users.create');
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -44,12 +38,12 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        // $user = User::create(array_merge(
-        //     $request->validated(),
-        //     ['password' => Hash::make($request['password'])]
-        // ));
+        $user = User::create(array_merge(
+            $request->validated(),
+            ['password' => Hash::make($request['password'])]
+        ));
 
-        // return redirect()->route('users.index')->with('message', 'User Register Succesfully');
+        return ['message' => 'User Created!'];
     }
 
     /**
@@ -58,20 +52,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        // return view('users.edit', compact('user'));
+        return new UserSingleResource($user);
     }
 
     /**
@@ -83,8 +66,8 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        // $user->update($request->validated());
-        // return redirect()->route('users.index')->with('message', 'User Updated Succesfully');
+        $user->update($request->validated());
+        return ['message' => 'User Update!'];
     }
 
     /**
@@ -95,7 +78,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        // $user->delete();
-        // return redirect()->route('users.index')->with('message', 'User Deleted Succesfully');
+        $user->delete();
+        return response()->json('Deleted');
     }
 }

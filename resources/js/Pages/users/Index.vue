@@ -44,23 +44,28 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- @foreach ($users as $user)
-                          <tr>
-                              <th>{{ $user->id }}</th>
-                              <td>{{ $user->username }}</td>
-                              <td>{{ $user->email }}</td>
-                              <td class="d-flex ">
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success mr-3">
-                                    <i class="far fa-edit"></i>
-                                </a>
-                                <form method="POST" action="{{ route('users.destroy', $user->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                </form>
-                              </td>
-                          </tr>
-                      @endforeach -->
+                       <tr v-for="user in users"
+                            :key="user.id">
+                                <th>#{{ user.id }}</th>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    <router-link
+                                        :to="{
+                                            name: 'UsersEdit',
+                                            params: { id: user.id }
+                                        }"
+                                        class="btn btn-primary"
+                                        >Edit</router-link
+                                    >
+                                    <button
+                                        class="btn btn-danger"
+                                        @click="deleteUser(user.id)"
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
                     </tbody>
                 </table>
             </div>
@@ -71,8 +76,48 @@
 
 <script>
 export default {
+    data() {
+        return {
+            users: [],
+            showMessage: false,
+            message: "",
+            search: null,
+        };
+    },
+    watch: {
+        search() {
+            this.getUsers();
+        }
+    },
+    created() {
+        this.getUsers();
+    },
+    methods: {
+        getUsers() {
+            axios
+                .get("/api/users", {
+                    params: {
+                        search: this.search,
+                    }
+                })
+                .then(res => {
+                    this.users = res.data.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
 
-}
+        deleteUser(id) {
+
+            axios.delete("api/users/" + id).then(res => {
+                this.showMessage = true;
+                this.message = res.data;
+                this.getUsers();
+            });
+        }
+    }
+};
 </script>
 
 <style>

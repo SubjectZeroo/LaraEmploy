@@ -30,7 +30,11 @@ const routes = [
         component: () => import('../Pages/countries/Create.vue'),
         name: 'CountriesCreate'
     },
-    ,
+    {
+        path: '/countries/:id',
+        component: () => import('../Pages/countries/Edit.vue'),
+        name: 'CountriesEdit'
+    },
     {
         path: '/states',
         component: () => import('../Pages/states/Index.vue'),
@@ -41,7 +45,11 @@ const routes = [
         component: () => import('../Pages/states/Create.vue'),
         name: 'StatesCreate'
     },
-    ,
+    {
+        path: '/states/:id',
+        component: () => import('../Pages/states/Edit.vue'),
+        name: 'StatesEdit'
+    },
     {
         path: '/cities',
         component: () => import('../Pages/cities/Index.vue'),
@@ -52,7 +60,11 @@ const routes = [
         component: () => import('../Pages/cities/Create.vue'),
         name: 'CitiesCreate'
     },
-    ,
+    {
+        path: '/cities/:id',
+        component: () => import('../Pages/cities/Edit.vue'),
+        name: 'CitiesEdit'
+    },
     {
         path: '/departments',
         component: () => import('../Pages/departments/Index.vue'),
@@ -64,6 +76,11 @@ const routes = [
         name: 'DepartmentsCreate'
     },
     {
+        path: '/departments/:id',
+        component: () => import('../Pages/departments/Edit.vue'),
+        name: 'DepartmentsEdit'
+    },
+    {
         path: '/users',
         component: () => import('../Pages/users/Index.vue'),
         name: 'UsersIndex'
@@ -72,6 +89,11 @@ const routes = [
         path: '/users/create',
         component: () => import('../Pages/users/Create.vue'),
         name: 'UsersCreate'
+    },
+    {
+        path: '/users/:id',
+        component: () => import('../Pages/users/Edit.vue'),
+        name: 'UsersEdit'
     },
   ]
 

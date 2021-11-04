@@ -44,23 +44,28 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- @foreach ($countries as $country)
-                          <tr>
-                              <th>{{ $country->id }}</th>
-                              <td>{{ $country->country_code }}</td>
-                              <td>{{ $country->name }}</td>
-                              <td class="d-flex ">
-                                <a href="{{ route('countries.edit', $country->id) }}" class="btn btn-success mr-3">
-                                    <i class="far fa-edit"></i>
-                                </a>
-                                <form method="POST" action="{{ route('countries.destroy', $country->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                </form>
-                              </td>
-                          </tr>
-                      @endforeach -->
+                       <tr v-for="country in countries"
+                            :key="country.id">
+                                <th>#{{ country.id }}</th>
+                                <td>{{ country.country_code }}</td>
+                                <td>{{ country.name }}</td>
+                                <td>
+                                    <router-link
+                                        :to="{
+                                            name: 'CountriesEdit',
+                                            params: { id: country.id }
+                                        }"
+                                        class="btn btn-primary"
+                                        >Edit</router-link
+                                    >
+                                    <button
+                                        class="btn btn-danger"
+                                        @click="deleteCountry(country.id)"
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
                     </tbody>
                 </table>
             </div>
@@ -71,8 +76,48 @@
 
 <script>
 export default {
+    data() {
+        return {
+            countries: [],
+            showMessage: false,
+            message: "",
+            search: null,
+        };
+    },
+    watch: {
+        search() {
+            this.getCountries();
+        }
+    },
+    created() {
+        this.getCountries();
+    },
+    methods: {
+        getCountries() {
+            axios
+                .get("/api/countries", {
+                    params: {
+                        search: this.search,
+                    }
+                })
+                .then(res => {
+                    this.countries = res.data.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
 
-}
+        deleteCountry(id) {
+
+            axios.delete("api/countries/" + id).then(res => {
+                this.showMessage = true;
+                this.message = res.data;
+                this.getCountries();
+            });
+        }
+    }
+};
 </script>
 
 <style>

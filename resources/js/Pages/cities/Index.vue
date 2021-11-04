@@ -61,6 +61,28 @@
                               </td>
                           </tr>
                       @endforeach -->
+                      <tr v-for="city in cities"
+                            :key="city.id">
+                                <th>#{{ city.id }}</th>
+                                <td>{{ city.state.name }}</td>
+                                <td>{{ city.name }}</td>
+                                <td>
+                                    <router-link
+                                        :to="{
+                                            name: 'CitiesEdit',
+                                            params: { id: city.id }
+                                        }"
+                                        class="btn btn-primary"
+                                        >Edit</router-link
+                                    >
+                                    <button
+                                        class="btn btn-danger"
+                                        @click="deleteCity(city.id)"
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
                     </tbody>
                 </table>
             </div>
@@ -71,8 +93,48 @@
 
 <script>
 export default {
+    data() {
+        return {
+            cities: [],
+            showMessage: false,
+            message: "",
+            search: null,
+        };
+    },
+    watch: {
+        search() {
+            this.getCities();
+        }
+    },
+    created() {
+        this.getCities();
+    },
+    methods: {
+        getCities() {
+            axios
+                .get("/api/cities", {
+                    params: {
+                        search: this.search,
+                    }
+                })
+                .then(res => {
+                    this.cities = res.data.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
 
-}
+        deleteCities(id) {
+
+            axios.delete("api/cities/" + id).then(res => {
+                this.showMessage = true;
+                this.message = res.data;
+                this.getCities();
+            });
+        }
+    }
+};
 </script>
 
 <style>

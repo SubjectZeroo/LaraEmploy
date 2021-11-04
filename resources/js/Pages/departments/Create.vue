@@ -5,11 +5,14 @@
         </div>
         <div class="card">
                 <div class="card-header">Create Department</div>
-                <form>
+                <form @submit.prevent="storeDepartment" @keydown="form.errors.clear($event.target.name)">
                     <div class="card-body">
                             <div class="form-group">
                                 <label for="name">Department Name</label>
-                                <input type="text" class="form-control" name="name">
+                                <input type="text" class="form-control" name="name" v-model="form.name">
+                                <div class="help is-danger"
+                                v-if="form.errors.has('name')"
+                                v-text="form.errors.get('name')"></div>
                             </div>
                     </div>
                     <div class="card-footer">
@@ -28,8 +31,26 @@
 </template>
 
 <script>
-export default {
 
+import Form from '../../core/Form';
+export default {
+    data() {
+            return {
+                form: new Form({
+                    name: ''
+                })
+            };
+        },
+    methods: {
+        storeDepartment() {
+            this.form.submit('post', '/api/departments')
+                .then(
+                    data => console.log(data),
+                    this.$router.push({ name: "DepartmentsIndex" })
+                )
+                .catch(errors => console.log(errors));
+        },
+    }
 }
 </script>
 

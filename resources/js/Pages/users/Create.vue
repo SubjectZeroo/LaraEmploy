@@ -5,53 +5,51 @@
     </div>
     <div class="card">
          <div class="card-header">Create User</div>
-         <form>
+         <form @submit.prevent="storeUser" @keydown="form.errors.clear($event.target.name)">
             <div class="card-body">
-
-                    <div class="form-group row">
-                        <label for="username" class="col-md-4 col-form-label text-md-right">Username</label>
-
-                        <div class="col-md-6">
-                            <input id="username" type="text" class="form-control" name="username"  required autocomplete="username" autofocus>
+                <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="username">Username</label>
+                            <input v-model="form.username" id="username" name="username" type="text" class="form-control">
+                             <div class="help is-danger"
+                                v-if="form.errors.has('username')"
+                                v-text="form.errors.get('username')"></div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="first_name" class="col-md-4 col-form-label text-md-right">First Name</label>
-
-                        <div class="col-md-6">
-                            <input id="first_name" type="text" class="form-control" name="first_name" required autocomplete="first_name" autofocus>
+                        <div class="form-group col-md-4">
+                            <label for="first_name">First Name</label>
+                            <input v-model="form.first_name" id="first_name" type="text" class="form-control" name="first_name">
+                             <div class="help is-danger"
+                                v-if="form.errors.has('first_name')"
+                                v-text="form.errors.get('first_name')"></div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="last_name" class="col-md-4 col-form-label text-md-right">Last Name</label>
-
-                        <div class="col-md-6">
-                            <input id="last_name" type="text" class="form-control" name="last_name" required autocomplete="last_name" autofocus>
+                         <div class="form-group col-md-4">
+                            <label for="last_name">Last Name</label>
+                            <input v-model="form.last_name" id="last_name" type="text" class="form-control" name="last_name">
+                            <div class="help is-danger"
+                                v-if="form.errors.has('last_name')"
+                                v-text="form.errors.get('last_name')"></div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
-
-                        <div class="col-md-6">
-                            <input id="email" type="email" class="form-control" name="email"  required autocomplete="email">
+                </div>
+                <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="email">Email</label>
+                            <input v-model="form.email" id="email" type="email" class="form-control" name="email">
+                            <div class="help is-danger"
+                                v-if="form.errors.has('email')"
+                                v-text="form.errors.get('email')"></div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-
-                        <div class="col-md-6">
-                            <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password">
+                        <div class="form-group col-md-4">
+                            <label for="password" >Password</label>
+                            <input v-model="form.password" id="password" type="password" class="form-control" name="password">
+                            <div class="help is-danger"
+                                v-if="form.errors.has('password')"
+                                v-text="form.errors.get('password')"></div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
-
-                        <div class="col-md-6">
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                        <div class="form-group col-md-4">
+                            <label for="password-confirm">Confirm Password</label>
+                            <input v-model="form.password_confirmation" id="password-confirm" type="password" class="form-control" name="password_confirmation">
                         </div>
-                    </div>
-
-
+                </div>
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Create User</button>
@@ -67,8 +65,31 @@
 </template>
 
 <script>
-export default {
 
+import Form from '../../core/Form';
+export default {
+    data() {
+            return {
+                form: new Form({
+                    username: '',
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    password: '',
+                    password_confirmation: '',
+                })
+            };
+        },
+    methods: {
+        storeUser() {
+            this.form.submit('post', '/api/users')
+                .then(
+                    data => console.log(data),
+                    this.$router.push({ name: "UsersIndex" })
+                )
+                .catch(errors => console.log(errors));
+        },
+    }
 }
 </script>
 

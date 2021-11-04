@@ -16,18 +16,23 @@ class EmployeeDataController extends Controller
         return response()->json($countries);
     }
 
+    public function allStates()
+    {
+        $states = State::all();
+
+        return response()->json($states);
+    }
+
     public function states(Country $country)
     {
 
         return response()->json($country->states);
-
     }
 
     public function cities(State $state)
     {
 
         return response()->json($state->cities);
-
     }
 
     public function departments()
@@ -35,6 +40,5 @@ class EmployeeDataController extends Controller
 
         $departments = Department::all();
         return response()->json($departments);
-
     }
 }

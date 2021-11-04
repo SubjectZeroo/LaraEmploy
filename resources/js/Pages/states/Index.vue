@@ -61,6 +61,28 @@
                               </td>
                           </tr>
                       @endforeach -->
+                       <tr v-for="state in states"
+                            :key="state.id">
+                                <th>#{{ state.id }}</th>
+                                <td>{{ state.country.name }}</td>
+                                <td>{{ state.name }}</td>
+                                <td>
+                                    <router-link
+                                        :to="{
+                                            name: 'StatesEdit',
+                                            params: { id: state.id }
+                                        }"
+                                        class="btn btn-primary"
+                                        >Edit</router-link
+                                    >
+                                    <button
+                                        class="btn btn-danger"
+                                        @click="deleteState(state.id)"
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
                     </tbody>
                 </table>
             </div>
@@ -71,8 +93,48 @@
 
 <script>
 export default {
+    data() {
+        return {
+            states: [],
+            showMessage: false,
+            message: "",
+            search: null,
+        };
+    },
+    watch: {
+        search() {
+            this.getStates();
+        }
+    },
+    created() {
+        this.getStates();
+    },
+    methods: {
+        getStates() {
+            axios
+                .get("/api/states", {
+                    params: {
+                        search: this.search,
+                    }
+                })
+                .then(res => {
+                    this.states = res.data.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
 
-}
+        deleteStates(id) {
+
+            axios.delete("api/states/" + id).then(res => {
+                this.showMessage = true;
+                this.message = res.data;
+                this.getStates();
+            });
+        }
+    }
+};
 </script>
 
 <style>

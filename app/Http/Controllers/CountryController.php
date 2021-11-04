@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Requests\UpdateCountryRequest;
+use App\Http\Resources\CountryResource;
+use App\Http\Resources\CountrySingleResource;
 use App\Models\Country;
 use Illuminate\Http\Request;
 
@@ -16,23 +18,15 @@ class CountryController extends Controller
      */
     public function index(Request $request)
     {
-        // $countries = Country::all();
+        $countries = Country::all();
 
-        // if($request->has('search')) {
-        //     $countries = Country::where('name', 'like', "%{$request->search}%")->orWhere('country_code', 'like', "%{$request->search}%")->get();
-        // }
-        // return view('countries.index', compact('countries'));
+        if ($request->has('search')) {
+            $countries = Country::where('name', 'like', "%{$request->search}%")->orWhere('country_code', 'like', "%{$request->search}%")->get();
+        }
+        return CountryResource::collection($countries);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // return view('countries.create');
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -42,8 +36,9 @@ class CountryController extends Controller
      */
     public function store(StoreCountryRequest $request)
     {
-        // $country = Country::create($request->validated());
-        // return redirect()->route('countries.index')->with('message', 'Country Register Succesfully');
+        $country = Country::create($request->validated());
+
+        return ['message' => 'Country Created!'];
     }
 
     /**
@@ -52,21 +47,11 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Country $country)
     {
-        //
+        return new CountrySingleResource($country);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Country $country)
-    {
-        // return view('countries.edit', compact('country'));
-    }
 
     /**
      * Update the specified resource in storage.
@@ -77,8 +62,9 @@ class CountryController extends Controller
      */
     public function update(UpdateCountryRequest $request, Country $country)
     {
-        // $country->update($request->validated());
-        // return redirect()->route('countries.index')->with('message', 'Country Updated Succesfully');
+        $country->update($request->validated());
+
+        return ['message' => 'Country Updated!'];
     }
 
     /**
@@ -89,7 +75,7 @@ class CountryController extends Controller
      */
     public function destroy(Country $country)
     {
-        // $country->delete();
-        // return redirect()->route('countries.index')->with('message', 'Country Deleted Succesfully');
+        $country->delete();
+        return response()->json('Deleted');
     }
 }

@@ -42,22 +42,27 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!-- @foreach ($departments as $deparment)
-                            <tr>
-                                <th>{{ $deparment->id }}</th>
-                                <td>{{ $deparment->name }}</td>
-                                <td class="d-flex ">
-                                    <a href="{{ route('departments.edit', $deparment->id) }}" class="btn btn-success mr-3">
-                                        <i class="far fa-edit"></i>
-                                    </a>
-                                    <form method="POST" action="{{ route('departments.destroy', $deparment->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                    </form>
+                        <tr v-for="deparment in departments"
+                            :key="deparment.id">
+                                <th>#{{ deparment.id }}</th>
+                                <td>{{ deparment.name }}</td>
+                                <td>
+                                    <router-link
+                                        :to="{
+                                            name: 'DepartmentsEdit',
+                                            params: { id: deparment.id }
+                                        }"
+                                        class="btn btn-primary"
+                                        >Edit</router-link
+                                    >
+                                    <button
+                                        class="btn btn-danger"
+                                        @click="deleteDepartment(deparment.id)"
+                                    >
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
-                        @endforeach -->
                         </tbody>
                     </table>
                 </div>
@@ -68,8 +73,48 @@
 
 <script>
 export default {
+    data() {
+        return {
+            departments: [],
+            showMessage: false,
+            message: "",
+            search: null,
+        };
+    },
+    watch: {
+        search() {
+            this.getDepartments();
+        }
+    },
+    created() {
+        this.getDepartments();
+    },
+    methods: {
+        getDepartments() {
+            axios
+                .get("/api/departments", {
+                    params: {
+                        search: this.search,
+                    }
+                })
+                .then(res => {
+                    this.departments = res.data.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
 
-}
+        deleteDepartment(id) {
+
+            axios.delete("api/departments/" + id).then(res => {
+                this.showMessage = true;
+                this.message = res.data;
+                this.getDepartments();
+            });
+        }
+    }
+};
 </script>
 
 <style>

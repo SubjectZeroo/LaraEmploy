@@ -5,11 +5,11 @@
     </div>
     <div class="card">
         <div class="card-header">Edit Department</div>
-        <form>
+        <form @submit.prevent="updateDepartment">
             <div class="card-body">
                 <div class="form-group">
                     <label for="name">Department Name</label>
-                    <input type="text" class="form-control" name="name">
+                    <input type="text" class="form-control" name="name" v-model="form.name">
                 </div>
             </div>
             <div class="card-footer">
@@ -30,7 +30,39 @@
 <script>
 export default {
 
-}
+    data() {
+        return {
+            form: {
+               name: '',
+            }
+        };
+    },
+ created() {
+
+        this.getDepartment();
+    },
+    methods: {
+        getDepartment() {
+            axios
+                .get("/api/departments/" + this.$route.params.id)
+                .then(res => {
+                    this.form = res.data.data;
+                })
+                .catch(error => {
+                    console.log(console.error);
+                });
+        },
+        updateDepartment() {
+            axios
+                .put("/api/departments/" + this.$route.params.id, {
+                    name: this.form.name,
+                })
+                .then(res => {
+                    this.$router.push({ name: "DepartmentsIndex" });
+                });
+        },
+    }
+};
 </script>
 
 <style>

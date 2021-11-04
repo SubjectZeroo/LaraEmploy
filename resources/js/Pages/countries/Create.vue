@@ -5,22 +5,22 @@
         </div>
         <div class="card">
              <div class="card-header">Create Country</div>
-             <form >
+             <form @submit.prevent="storeCountry" @keydown="form.errors.clear($event.target.name)">
                 <div class="card-body">
-                        <div class="form-group row">
-                            <label for="country_code" class="col-md-4 col-form-label text-md-right">Country Code</label>
-                            <div class="col-md-6">
-                                <input id="country_code" type="text" class="form-control" name="country_code" value="" required autocomplete="country_code" autofocus>
-                            </div>
+                        <div class="form-group">
+                            <label for="country_code">Country Code</label>
+                            <input id="country_code" type="text" class="form-control" name="country_code" v-model="form.country_code">
+                             <div class="help is-danger"
+                                v-if="form.errors.has('country_code')"
+                                v-text="form.errors.get('country_code')"></div>
                         </div>
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">Country Name</label>
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" required autocomplete="name" autofocus>
-                            </div>
+                        <div class="form-group">
+                            <label for="name">Country Name</label>
+                            <input id="name" type="text" class="form-control" name="name" v-model="form.name">
+                            <div class="help is-danger"
+                                v-if="form.errors.has('name')"
+                                v-text="form.errors.get('name')"></div>
                         </div>
-
-
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">
@@ -38,10 +38,30 @@
 </template>
 
 <script>
-export default {
 
+import Form from '../../core/Form';
+export default {
+    data() {
+            return {
+                form: new Form({
+                    country_code: '',
+                    name: ''
+                })
+            };
+        },
+    methods: {
+        storeCountry() {
+            this.form.submit('post', '/api/countries')
+                .then(
+                    data => console.log(data),
+                    this.$router.push({ name: "CountriesIndex" })
+                )
+                .catch(errors => console.log(errors));
+        },
+    }
 }
 </script>
+
 
 <style>
 

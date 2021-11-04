@@ -79,7 +79,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      departments: [],
+      showMessage: false,
+      message: "",
+      search: null
+    };
+  },
+  watch: {
+    search: function search() {
+      this.getDepartments();
+    }
+  },
+  created: function created() {
+    this.getDepartments();
+  },
+  methods: {
+    getDepartments: function getDepartments() {
+      var _this = this;
+
+      axios.get("/api/departments", {
+        params: {
+          search: this.search
+        }
+      }).then(function (res) {
+        _this.departments = res.data.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    deleteDepartment: function deleteDepartment(id) {
+      var _this2 = this;
+
+      axios["delete"]("api/departments/" + id).then(function (res) {
+        _this2.showMessage = true;
+        _this2.message = res.data;
+
+        _this2.getDepartments();
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -196,7 +243,62 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _vm._m(2)
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "table-responsive" }, [
+          _c("table", { staticClass: "table" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.departments, function(deparment) {
+                return _c("tr", { key: deparment.id }, [
+                  _c("th", [_vm._v("#" + _vm._s(deparment.id))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(deparment.name))]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            to: {
+                              name: "DepartmentsEdit",
+                              params: { id: deparment.id }
+                            }
+                          }
+                        },
+                        [_vm._v("Edit")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteDepartment(deparment.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    Delete\n                                "
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ])
+              }),
+              0
+            )
+          ])
+        ])
+      ])
     ])
   ])
 }
@@ -255,21 +357,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c("div", { staticClass: "table-responsive" }, [
-        _c("table", { staticClass: "table" }, [
-          _c("thead", [
-            _c("tr", [
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tbody")
-        ])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
       ])
     ])
   }

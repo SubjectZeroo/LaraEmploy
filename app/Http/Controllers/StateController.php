@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStateRequest;
 use App\Http\Requests\UpdateStateRequest;
+use App\Http\Resources\StateResource;
+use App\Http\Resources\StateSingleResource;
 use App\Models\Country;
 use App\Models\State;
 use Illuminate\Http\Request;
@@ -17,20 +19,11 @@ class StateController extends Controller
      */
     public function index()
     {
-        // $states = State::all();
-        // return view('states.index', compact('states'));
+        $states = State::all();
+
+        return StateResource::collection($states);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // $countries = Country::all();
-        // return view('states.create', compact('countries'));
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -40,8 +33,8 @@ class StateController extends Controller
      */
     public function store(StoreStateRequest $request)
     {
-        // $state = State::create($request->validated());
-        // return redirect()->route('states.index')->with('message', 'State Register Succesfully');
+        $state = State::create($request->validated());
+        return ['message' => 'State Created!'];
     }
 
     /**
@@ -50,22 +43,11 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(State $state)
     {
-        //
+        return new StateSingleResource($state);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(State $state)
-    {
-        // $countries = Country::all();
-        // return view('states.edit', compact('state', 'countries'));
-    }
 
     /**
      * Update the specified resource in storage.
@@ -76,8 +58,8 @@ class StateController extends Controller
      */
     public function update(UpdateStateRequest $request, State $state)
     {
-        // $state->update($request->validated());
-        // return redirect()->route('states.index')->with('message', 'State Updated Succesfully');
+        $state->update($request->validated());
+        return ['message' => 'State Updated!'];
     }
 
     /**
@@ -88,7 +70,7 @@ class StateController extends Controller
      */
     public function destroy(State $state)
     {
-        // $state->delete();
-        // return redirect()->route('states.index')->with('message', 'State Deleted Succesfully');
+        $state->delete();
+        return response()->json('Deleted');
     }
 }
