@@ -13,227 +13,318 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
 /* harmony import */ var vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue2-datepicker/index.css */ "./node_modules/vue2-datepicker/index.css");
+/* harmony import */ var _core_Form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core/Form */ "./resources/js/core/Form.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      countries: [],
+      states: [],
+      departments: [],
+      cities: [],
+      form: new _core_Form__WEBPACK_IMPORTED_MODULE_2__["default"]({
+        firts_name: '',
+        last_name: '',
+        middle_name: '',
+        address: '',
+        country_id: '',
+        state_id: '',
+        department_id: '',
+        city_id: '',
+        zip_code: '',
+        birthdate: null,
+        date_hired: null
+      })
+    };
+  },
+  created: function created() {
+    this.getCountries();
+    this.getDepartments();
+  },
+  methods: {
+    getCountries: function getCountries() {
+      var _this = this;
+
+      axios.get("/api/employees/countries").then(function (res) {
+        _this.countries = res.data;
+      })["catch"](function (error) {
+        console.log(console.error);
+      });
+    },
+    getStates: function getStates() {
+      var _this2 = this;
+
+      axios.get("/api/employees/" + this.form.country_id + "/states").then(function (res) {
+        _this2.states = res.data;
+      })["catch"](function (error) {
+        console.log(console.error);
+      });
+    },
+    getCities: function getCities() {
+      var _this3 = this;
+
+      axios.get("/api/employees/" + this.form.state_id + "/cities").then(function (res) {
+        _this3.cities = res.data;
+      })["catch"](function (error) {
+        console.log(console.error);
+      });
+    },
+    getDepartments: function getDepartments() {
+      var _this4 = this;
+
+      axios.get("/api/employees/departments").then(function (res) {
+        _this4.departments = res.data;
+      })["catch"](function (error) {
+        console.log(console.error);
+      });
+    },
+    storeEmployee: function storeEmployee() {
+      this.form.submit('post', '/api/employees').then(function (data) {
+        return console.log(data);
+      })["catch"](function (errors) {
+        return console.log(errors);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/core/Errors.js":
+/*!*************************************!*\
+  !*** ./resources/js/core/Errors.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
 var Errors = /*#__PURE__*/function () {
+  /**
+   * Create a new Errors instance.
+   */
   function Errors() {
     _classCallCheck(this, Errors);
 
     this.errors = {};
   }
+  /**
+   * Determine if an errors exists for the given field
+   *
+   * @param {string} field
+   */
+
 
   _createClass(Errors, [{
     key: "has",
     value: function has(field) {
       return this.errors.hasOwnProperty(field);
     }
+    /**
+     * Determine if we have any errors.
+     */
+
   }, {
     key: "any",
     value: function any() {
       return Object.keys(this.errors).length > 0;
     }
+    /**
+     * Retrieve the error message for a field.
+     *
+     *  @param {string} field
+     */
+
   }, {
     key: "get",
     value: function get(field) {
@@ -241,11 +332,24 @@ var Errors = /*#__PURE__*/function () {
         return this.errors[field][0];
       }
     }
+    /**
+     * Record the new errors.
+     *
+     * @param {object} errors
+     */
+
   }, {
     key: "record",
     value: function record(errors) {
       this.errors = errors.errors;
     }
+    /**
+     *
+     * CLear one or all error fields.
+     *
+     * @param {string|null} field
+     */
+
   }, {
     key: "clear",
     value: function clear(field) {
@@ -261,7 +365,35 @@ var Errors = /*#__PURE__*/function () {
   return Errors;
 }();
 
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Errors);
+
+/***/ }),
+
+/***/ "./resources/js/core/Form.js":
+/*!***********************************!*\
+  !*** ./resources/js/core/Form.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Errors */ "./resources/js/core/Errors.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
 var Form = /*#__PURE__*/function () {
+  /**
+   * Create a new Form instance
+   *
+   * @param {object} data
+   */
   function Form(data) {
     _classCallCheck(this, Form);
 
@@ -271,15 +403,22 @@ var Form = /*#__PURE__*/function () {
       this[field] = data[field];
     }
 
-    this.errors = new Errors();
+    this.errors = new _Errors__WEBPACK_IMPORTED_MODULE_0__["default"]();
   }
+  /**
+   * Fetch all relevant data for the form
+   */
+
 
   _createClass(Form, [{
     key: "data",
     value: function data() {
-      var data = Object.assign({}, this);
-      delete data.originalData;
-      delete data.errors;
+      var data = {};
+
+      for (var property in this.originalData) {
+        data[property] = this[property];
+      }
+
       return data;
     }
     /**
@@ -312,7 +451,7 @@ var Form = /*#__PURE__*/function () {
         //     this.$router.push({ name: "EmployeesIndex" });
         // })
         .then(function (response) {
-          _this.onSucess(response.data);
+          _this.onSuccess(response.data);
 
           resolve(response.data);
         })["catch"](function (error) {
@@ -330,8 +469,8 @@ var Form = /*#__PURE__*/function () {
      */
 
   }, {
-    key: "onSucess",
-    value: function onSucess(data) {
+    key: "onSuccess",
+    value: function onSuccess(data) {
       alert(data.message); //temporary
 
       this.reset();
@@ -353,86 +492,7 @@ var Form = /*#__PURE__*/function () {
   return Form;
 }();
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  data: function data() {
-    return {
-      countries: [],
-      states: [],
-      departments: [],
-      cities: [],
-      form: new Form({
-        firts_name: '',
-        last_name: '',
-        middle_name: '',
-        address: '',
-        country_id: '',
-        state_id: '',
-        department_id: '',
-        city_id: '',
-        zip_code: '',
-        birthdate: null,
-        date_hired: null
-      })
-    };
-  },
-  created: function created() {
-    this.getCountries();
-    this.getDepartments();
-  },
-  methods: {
-    getCountries: function getCountries() {
-      var _this2 = this;
-
-      axios.get("/api/employees/countries").then(function (res) {
-        _this2.countries = res.data;
-      })["catch"](function (error) {
-        console.log(console.error);
-      });
-    },
-    getStates: function getStates() {
-      var _this3 = this;
-
-      axios.get("/api/employees/" + this.form.country_id + "/states").then(function (res) {
-        _this3.states = res.data;
-      })["catch"](function (error) {
-        console.log(console.error);
-      });
-    },
-    getCities: function getCities() {
-      var _this4 = this;
-
-      axios.get("/api/employees/" + this.form.state_id + "/cities").then(function (res) {
-        _this4.cities = res.data;
-      })["catch"](function (error) {
-        console.log(console.error);
-      });
-    },
-    getDepartments: function getDepartments() {
-      var _this5 = this;
-
-      axios.get("/api/employees/departments").then(function (res) {
-        _this5.departments = res.data;
-      })["catch"](function (error) {
-        console.log(console.error);
-      });
-    },
-    storeEmployee: function storeEmployee() {
-      this.form.submit('post', '/api/employees').then(function (data) {
-        return console.log(data);
-      })["catch"](function (errors) {
-        return console.log(errors);
-      });
-    },
-    format_date: function format_date(value) {
-      if (value) {
-        return moment(String(value)).format("YYYYMMDD");
-      }
-    }
-  }
-});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Form);
 
 /***/ }),
 

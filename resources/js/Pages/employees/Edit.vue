@@ -7,150 +7,140 @@
             <div class="card-header">Edit Employee</div>
             <form @submit.prevent="updateEmployee">
                 <div class="card-body">
-                    <div class="form-group">
-                        <label for="firts_name">Firts Name</label>
-                        <input
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                             <label for="firts_name">Firts Name</label>
+                            <input
                             v-model="form.firts_name"
                             type="text"
                             class="form-control"
-                            name="firts_name"
-                            value=""
-                        />
-                        <!-- <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span> -->
+                            name="firts_name"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="last_name">Last Name</label>
+                            <input
+                                v-model="form.last_name"
+                                type="text"
+                                class="form-control"
+                                name="last_name"
+                            />
+                        </div>
+                        <div class="form-group col-md-4">
+                             <label for="middle_name">Middle Name</label>
+                            <input
+                                v-model="form.middle_name"
+                                type="text"
+                                class="form-control"
+                                name="middle_name"
+                            />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="last_name">Last Name</label>
-                        <input
-                            v-model="form.last_name"
-                            type="text"
-                            class="form-control"
-                            name="last_name"
-                            value=""
-                        />
-                        <!-- <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span> -->
+                    <div class="form-row">
+
+                        <div class="form-group col-md-12">
+                             <label for="address">Address</label>
+                            <input
+                                v-model="form.address"
+                                type="text"
+                                class="form-control"
+                                name="address"
+                            />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="middle_name">Middle Name</label>
-                        <input
-                            v-model="form.middle_name"
-                            type="text"
-                            class="form-control"
-                            name="middle_name"
-                            value=""
-                        />
-                        <!-- <span class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                            </span> -->
+                    <div class="form-row">
+                         <div class="form-group col-md-12">
+                            <label for="department_id">Department</label>
+                            <select
+                                v-model="form.department_id"
+                                @change="getDepartments()"
+                                class="custom-select"
+                                name="department">
+                                <option
+                                    v-for="department in departments"
+                                    :key="department.id"
+                                    :value="department.id">
+                                    {{ department.name }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input
-                            v-model="form.address"
-                            type="text"
-                            class="form-control"
-                            name="address"
-                            value=""
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="department_id">Department</label>
-                        <select
-                            v-model="form.department_id"
-                            @change="getDepartments()"
-                            class="custom-select"
-                            name="department_id"
-                        >
-                            <option
-                                v-for="department in departments"
-                                :key="department.id"
-                                :value="department.id"
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="country_id">Countries</label>
+                            <select
+                                v-model="form.country_id"
+                                @change="getStates()"
+                                class="custom-select"
+                                name="country"
+                                aria-label="Default Select example"
                             >
-                                {{ department.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="country_id">Countries</label>
-                        <select
-                            v-model="form.country_id"
-                            @change="getStates()"
-                            class="custom-select"
-                            name="country"
-                            aria-label="Default Select example"
-                        >
-                            <option
-                                v-for="country in countries"
-                                :key="country.id"
-                                :value="country.id"
+                                <option
+                                    v-for="country in countries"
+                                    :key="country.id"
+                                    :value="country.id"
+                                >
+                                    {{ country.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="state_id">States</label>
+                            <select
+                                v-model="form.state_id"
+                                @change="getCities()"
+                                class="custom-select"
+                                name="state"
                             >
-                                {{ country.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="state_id">States</label>
-                        <select
-                            v-model="form.state_id"
-                            @change="getCities()"
-                            class="custom-select"
-                            name="state"
-                        >
-                            <option
-                                v-for="state in states"
-                                :key="state.id"
-                                :value="state.id"
+                                <option
+                                    v-for="state in states"
+                                    :key="state.id"
+                                    :value="state.id"
+                                >
+                                    {{ state.name }}
+                                </option>
+                            </select>
+
+                        </div>
+                        <div class="form-group col-md-4">
+                             <label for="city_id">City</label>
+                            <select
+                                v-model="form.city_id"
+                                class="custom-select"
+                                name="city"
                             >
-                                {{ state.name }}
-                            </option>
-                        </select>
+                                <option
+                                    v-for="city in cities"
+                                    :key="city.id"
+                                    :value="city.id"
+                                >
+                                    {{ city.name }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="city_id">City</label>
-                        <select
-                            v-model="form.city_id"
-                            class="custom-select"
-                            name="city"
-                        >
-                            <option
-                                v-for="city in cities"
-                                :key="city.id"
-                                :value="city.id"
-                            >
-                                {{ city.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="zip_Code">Zip Code</label>
-                        <input
-                            v-model="form.zip_code"
-                            type="text"
-                            class="form-control"
-                            name="zip_code"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="birthdate">Birthdate</label>
-                        <datepicker
-                            v-model="form.birthdate"
-                            input-class="form-control"
-                        ></datepicker>
-                    </div>
-                    <div class="form-group">
-                        <label for="date_hired">Date Hired</label>
-                        <datepicker
-                            v-model="form.date_hired"
-                            input-class="form-control"
-                        ></datepicker>
-                    </div>
+                     <div class="form-row">
+                         <div class="form-group col-md-4">
+                            <label for="zip_Code">Zip Code</label>
+                            <input
+                                v-model="form.zip_code"
+                                type="text"
+                                class="form-control"
+                                name="zip_code"
+                            />
+                        </div>
+                        <div class="form-group col-md-4">
+                             <div class="mb-2">Birthdate</div>
+                            <date-picker input-class="form-control" v-model="form.birthdate" valueType="format" :placeholder="'Select Birthdate'"  style="width: 100%;"></date-picker>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <div class="mb-2">Date Hired</div>
+                            <date-picker input-class="form-control" v-model="form.date_hired" valueType="format" :placeholder="'Select Date Hired'" id="date_hired"  style="width: 100%;"></date-picker>
+                        </div>
+                     </div>
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">
-                        Update Employee
+                        Create Employee
                     </button>
                     <router-link
                         :to="{ name: 'EmployeesIndex' }"
@@ -164,11 +154,11 @@
     </div>
 </template>
 <script>
-import Datepicker from "vuejs-datepicker";
+import DatePicker from 'vue2-datepicker';
 import moment from "moment";
 export default {
     components: {
-        Datepicker
+        DatePicker
     },
     data() {
         return {

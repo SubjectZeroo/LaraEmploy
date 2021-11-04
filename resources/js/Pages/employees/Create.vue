@@ -160,23 +160,6 @@
                             <div class="help is-danger" v-if="form.errors.has('date_hired')" v-text="form.errors.get('date_hired')" width="500"></div>
                         </div>
                      </div>
-                    <!-- <div class="form-group">
-
-                    </div>
-                    <section>
-                         <p>Birthdate</p>
-                         <date-picker v-model="form.birthdate" valueType="format"></date-picker>
-                         <div class="help is-danger" v-if="form.errors.has('birthdate')" v-text="form.errors.get('birthdate')"></div>
-                    </section> -->
-                    <!-- <div class="form-group">
-                        <label for="birthdate">Birthdate</label>
-
-                    </div> -->
-                    <!-- <section>
-                        <p>Date Hired</p>
-                        <date-picker input-class="form-control" v-model="form.date_hired" valueType="format"></date-picker>
-                        <div class="help is-danger" v-if="form.errors.has('date_hired')" v-text="form.errors.get('date_hired')"></div>
-                    </section> -->
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary" :disabled="form.errors.any()">
@@ -196,167 +179,7 @@
 <script>
   import DatePicker from 'vue2-datepicker';
   import 'vue2-datepicker/index.css';
-
-class Errors {
-
-    constructor() {
-
-        this.errors = {};
-
-    }
-
-    has(field) {
-        return this.errors.hasOwnProperty(field);
-    }
-
-    any() {
-        return Object.keys(this.errors).length > 0;
-    }
-
-    get(field) {
-
-        if(this.errors[field]) {
-
-           return this.errors[field][0];
-
-        }
-
-    }
-
-    record(errors) {
-
-        this.errors = errors.errors;
-
-    }
-
-    clear(field) {
-
-        if(field) {
-            delete this.errors[field];
-
-            return;
-        }
-
-        this.errors ={};
-
-    }
-
-}
-
-
-class Form {
-
-    constructor(data) {
-
-        this.originalData = data;
-
-        for (let field in data) {
-
-            this[field] = data[field];
-
-        }
-
-        this.errors = new Errors();
-    }
-    /**
-     * Fetch all relevant data for the form
-     */
-
-    data() {
-
-        //   let data =  Object.assign({}, this);
-
-        //   delete data.originalData;
-        //   delete data.errors;
-
-        letdata = {};
-
-        for (let property in this.originalData) {
-
-            data[property] = this[property];
-
-        }
-
-        return data;
-
-    }
-
-
-    /**
-     *  Reset the form fields
-     */
-
-    reset() {
-
-       for (let field in this.originalData) {
-
-           this[field] = ''
-       }
-
-         this.errors.clear();
-
-    }
-
-    /**
-     * Submit the form
-     *
-     * @param {string} requestType
-     * @param {string} url
-     */
-
-    submit(requestType, url) {
-
-        return new Promise((resolve, reject) => {
-            axios[requestType](url, this.data())
-            // .then(response => {
-            //     this.$router.push({ name: "EmployeesIndex" });
-            // })
-            .then(response => {
-
-                this.onSuccess(response.data);
-
-                resolve(response.data);
-
-            })
-            .catch(error => {
-
-                this.onFail(error.response.data);
-
-                reject(error.response.data);
-
-            });
-
-        });
-
-    }
-    /**
-     * Handle a succesful form submission.
-     *
-     * @param {object} data
-     *
-     */
-
-    onSuccess(data) {
-
-        alert(data.message); //temporary
-
-
-        this.reset();
-
-    }
-
-    /**
-     * Handle a failed form submission.
-     *
-     * @param {object} errors
-     *
-     */
-
-    onFail(errors) {
-        this.errors.record(errors);
-    }
-}
-
+  import Form from '../../core/Form';
 export default {
     components: {
         DatePicker
@@ -434,11 +257,7 @@ export default {
                 .then(data => console.log(data))
                 .catch(errors => console.log(errors));
         },
-        format_date(value) {
-            if (value) {
-                return moment(String(value)).format("YYYYMMDD");
-            }
-        }
+
     }
 };
 </script>

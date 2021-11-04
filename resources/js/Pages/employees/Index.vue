@@ -159,11 +159,15 @@ export default {
                 });
         },
         deleteEmployee(id) {
+
             axios.delete("api/employees/" + id).then(res => {
                 this.showMessage = true;
                 this.message = res.data;
                 this.getEmployees();
             });
+
+
+
         }
     }
 };

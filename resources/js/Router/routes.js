@@ -14,6 +14,11 @@ const routes = [
         component: () => import('../Pages/employees/Create.vue'),
         name: 'EmployeesCreate'
     },
+    {
+        path: '/employees/:id',
+        component: () => import('../Pages/employees/Edit.vue'),
+        name: 'EmployeesEdit'
+    },
     ,
     {
         path: '/countries',
