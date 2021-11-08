@@ -38,7 +38,7 @@ class CityController extends Controller
     public function store(StoreCityRequest $request)
     {
         $cities = City::create($request->validated());
-        return response()->json($cities);
+        return ['message' => 'City Store!'];
     }
 
     /**
@@ -62,6 +62,7 @@ class CityController extends Controller
     public function update(UpdateCityRequest $request, City $city)
     {
         $city->update($request->validated());
+        return ['message' => 'City Update!'];
     }
 
     /**
