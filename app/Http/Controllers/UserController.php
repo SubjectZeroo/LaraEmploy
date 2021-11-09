@@ -21,11 +21,14 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        if ($request->has('search')) {
-            $users = User::where('username', 'like', "%{$request->search}%")->orWhere('email', 'like', "%{$request->search}%")->get();
-        }
+        // if ($request->has('search')) {
+        //     $users = User::where('username', 'like', "%{$request->search}%")->orWhere('email', 'like', "%{$request->search}%")->get();
+        // }
 
         return UserResource::collection($users);
+        // return response()->json([
+        //     'users' => $users
+        // ]);
     }
 
 

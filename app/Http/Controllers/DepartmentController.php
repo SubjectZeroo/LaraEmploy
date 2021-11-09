@@ -32,7 +32,7 @@ class DepartmentController extends Controller
     public function store(StoreDepartmentRequest $request)
     {
         $department = Department::create($request->validated());
-        return ['message' => 'Department Store!'];
+        return ['message' => 'Department Created!'];
     }
 
     /**

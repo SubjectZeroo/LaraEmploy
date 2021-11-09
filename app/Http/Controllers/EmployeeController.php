@@ -16,18 +16,16 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index( Request $request)
+    public function index(Request $request)
     {
         $employees = Employee::all();
 
         if ($request->search) {
 
             $employees = Employee::where('firts_name', "like", "%{$request->search}%")->get();
-
-        } elseif($request->department_id) {
+        } elseif ($request->department_id) {
 
             $employees = Employee::where('department_id', $request->department_id)->get();
-
         }
 
 
@@ -54,9 +52,7 @@ class EmployeeController extends Controller
     {
         $employee = Employee::create($request->validated());
 
-        // return redirect()->route('employees.index')->with('message', 'Employee Register Succesfully');
-
-        return response()->json($employee);
+        return ['message' => 'Employee Created!'];
     }
 
     /**
@@ -88,9 +84,10 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEmployeeRequest $request,Employee $employee)
+    public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $employee->update($request->validated());
+        return ['message' => 'Employee Updated!'];
     }
 
     /**

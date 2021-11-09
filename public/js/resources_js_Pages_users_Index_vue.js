@@ -87,19 +87,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      users: [],
+      isLoading: false,
+      columns: [{
+        label: 'ID',
+        field: 'id' // filterable: true
+
+      }, {
+        label: 'User Name',
+        field: 'username' // filterable: true
+
+      }, {
+        label: 'Email Address',
+        field: 'email' // filterable: true
+
+      }],
+      rows: [],
+      totalRecords: 0,
+      serverParams: {
+        columnFilters: {
+          field: 'username'
+        },
+        sort: [{
+          field: '',
+          type: ''
+        }],
+        page: 1,
+        perPage: 10
+      },
       showMessage: false,
-      message: "",
-      search: null
+      message: ""
     };
-  },
-  watch: {
-    search: function search() {
-      this.getUsers();
-    }
   },
   created: function created() {
     this.getUsers();
@@ -108,11 +144,8 @@ __webpack_require__.r(__webpack_exports__);
     getUsers: function getUsers() {
       var _this = this;
 
-      axios.get("/api/users", {
-        params: {
-          search: this.search
-        }
-      }).then(function (res) {
+      axios.get("/api/users").then(function (res) {
+        _this.rows = res.data.data;
         _this.users = res.data.data;
       })["catch"](function (error) {
         console.log(error);
@@ -126,6 +159,43 @@ __webpack_require__.r(__webpack_exports__);
         _this2.message = res.data;
 
         _this2.getUsers();
+      });
+    },
+    updateParams: function updateParams(newProps) {
+      this.serverParams = Object.assign({}, this.serverParams, newProps);
+    },
+    onPageChange: function onPageChange(params) {
+      this.updateParams({
+        page: params.currentPage
+      });
+      this.loadItems();
+    },
+    onPerPageChange: function onPerPageChange(params) {
+      this.updateParams({
+        perPage: params.currentPerPage
+      });
+      this.loadItems();
+    },
+    onSortChange: function onSortChange(params) {
+      this.updateParams({
+        sort: [{
+          type: params.sortType,
+          field: this.columns[params.columnIndex].field
+        }]
+      });
+      this.loadItems();
+    },
+    onColumnFilter: function onColumnFilter(params) {
+      this.updateParams(params);
+      this.loadItems();
+    },
+    // load items is what brings back the rows from server
+    loadItems: function loadItems() {
+      var _this3 = this;
+
+      getFromServer(this.serverParams).then(function (response) {
+        _this3.totalRecords = response.totalRecords;
+        _this3.rows = response.rows;
       });
     }
   }
@@ -231,8 +301,6 @@ var render = function() {
               "d-flex justify-content-between justify-content-center align-items-center"
           },
           [
-            _vm._m(1),
-            _vm._v(" "),
             _c(
               "router-link",
               {
@@ -246,64 +314,37 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table" }, [
-            _vm._m(2),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.users, function(user) {
-                return _c("tr", { key: user.id }, [
-                  _c("th", [_vm._v("#" + _vm._s(user.id))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(user.username))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(user.email))]),
-                  _vm._v(" "),
-                  _c(
-                    "td",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: {
-                            to: {
-                              name: "UsersEdit",
-                              params: { id: user.id }
-                            }
-                          }
-                        },
-                        [_vm._v("Edit")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger",
-                          on: {
-                            click: function($event) {
-                              return _vm.deleteUser(user.id)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                      Delete\n                                  "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ])
-              }),
-              0
-            )
-          ])
-        ])
-      ])
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        [
+          _c("vue-good-table", {
+            attrs: {
+              mode: "remote",
+              totalRows: _vm.totalRecords,
+              isLoading: _vm.isLoading,
+              "pagination-options": {
+                enabled: true
+              },
+              rows: _vm.rows,
+              columns: _vm.columns
+            },
+            on: {
+              "on-page-change": _vm.onPageChange,
+              "on-sort-change": _vm.onSortChange,
+              "on-column-filter": _vm.onColumnFilter,
+              "on-per-page-change": _vm.onPerPageChange,
+              "update:isLoading": function($event) {
+                _vm.isLoading = $event
+              },
+              "update:is-loading": function($event) {
+                _vm.isLoading = $event
+              }
+            }
+          })
+        ],
+        1
+      )
     ])
   ])
 }
@@ -323,56 +364,6 @@ var staticRenderFns = [
         ])
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("form", { attrs: { method: "GET", action: "" } }, [
-      _c("div", { staticClass: "form-row align-items-center" }, [
-        _c("div", { staticClass: "col-auto" }, [
-          _c(
-            "label",
-            { staticClass: "sr-only", attrs: { for: "inlineFormInput" } },
-            [_vm._v("Name")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control mb-2",
-            attrs: {
-              type: "search",
-              name: "search",
-              id: "inlineFormInput",
-              placeholder: "Search by Name or Email"
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-auto" }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-primary mb-2", attrs: { type: "submit" } },
-            [_vm._v("Search")]
-          )
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Username")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Email")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
-      ])
-    ])
   }
 ]
 render._withStripped = true

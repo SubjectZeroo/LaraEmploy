@@ -254,7 +254,10 @@ export default {
 
         storeEmployee() {
             this.form.submit('post', '/api/employees')
-                .then(data => console.log(data))
+                .then(
+                    data => console.log(data),
+                    this.$router.push({ name: "EmployeesIndex" })
+                )
                 .catch(errors => console.log(errors));
         },
 
