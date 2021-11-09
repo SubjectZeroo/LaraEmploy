@@ -106,33 +106,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      isLoading: false,
-      columns: [{
-        label: 'ID',
-        field: 'id' // filterable: true
-
-      }, {
-        label: 'User Name',
-        field: 'username' // filterable: true
-
-      }, {
-        label: 'Email Address',
-        field: 'email' // filterable: true
-
-      }],
-      rows: [],
-      totalRecords: 0,
-      serverParams: {
-        columnFilters: {
-          field: 'username'
-        },
-        sort: [{
-          field: '',
-          type: ''
-        }],
-        page: 1,
-        perPage: 10
-      },
+      users: [],
       showMessage: false,
       message: ""
     };
@@ -145,7 +119,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get("/api/users").then(function (res) {
-        _this.rows = res.data.data;
         _this.users = res.data.data;
       })["catch"](function (error) {
         console.log(error);
@@ -159,43 +132,6 @@ __webpack_require__.r(__webpack_exports__);
         _this2.message = res.data;
 
         _this2.getUsers();
-      });
-    },
-    updateParams: function updateParams(newProps) {
-      this.serverParams = Object.assign({}, this.serverParams, newProps);
-    },
-    onPageChange: function onPageChange(params) {
-      this.updateParams({
-        page: params.currentPage
-      });
-      this.loadItems();
-    },
-    onPerPageChange: function onPerPageChange(params) {
-      this.updateParams({
-        perPage: params.currentPerPage
-      });
-      this.loadItems();
-    },
-    onSortChange: function onSortChange(params) {
-      this.updateParams({
-        sort: [{
-          type: params.sortType,
-          field: this.columns[params.columnIndex].field
-        }]
-      });
-      this.loadItems();
-    },
-    onColumnFilter: function onColumnFilter(params) {
-      this.updateParams(params);
-      this.loadItems();
-    },
-    // load items is what brings back the rows from server
-    loadItems: function loadItems() {
-      var _this3 = this;
-
-      getFromServer(this.serverParams).then(function (response) {
-        _this3.totalRecords = response.totalRecords;
-        _this3.rows = response.rows;
       });
     }
   }
@@ -283,90 +219,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* binding */ render),
 /* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
 /* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div"),
-    _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "d-flex justify-content-between justify-content-center align-items-center"
-          },
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { to: { name: "UsersCreate" } }
-              },
-              [_vm._v("Create User")]
-            )
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "card-body" },
-        [
-          _c("vue-good-table", {
-            attrs: {
-              mode: "remote",
-              totalRows: _vm.totalRecords,
-              isLoading: _vm.isLoading,
-              "pagination-options": {
-                enabled: true
-              },
-              rows: _vm.rows,
-              columns: _vm.columns
-            },
-            on: {
-              "on-page-change": _vm.onPageChange,
-              "on-sort-change": _vm.onSortChange,
-              "on-column-filter": _vm.onColumnFilter,
-              "on-per-page-change": _vm.onPerPageChange,
-              "update:isLoading": function($event) {
-                _vm.isLoading = $event
-              },
-              "update:is-loading": function($event) {
-                _vm.isLoading = $event
-              }
-            }
-          })
-        ],
-        1
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "d-sm-flex align-items-center justify-content-between mb-4"
-      },
-      [
-        _c("h1", { staticClass: "h3 mb-0 text-gray-800" }, [
-          _vm._v("Registered Users")
-        ])
-      ]
-    )
-  }
-]
-render._withStripped = true
+var render = function () {}
+var staticRenderFns = []
 
 
 

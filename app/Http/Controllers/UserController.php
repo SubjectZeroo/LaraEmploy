@@ -19,16 +19,27 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::all();
+        // $users = User::all();
 
         // if ($request->has('search')) {
         //     $users = User::where('username', 'like', "%{$request->search}%")->orWhere('email', 'like', "%{$request->search}%")->get();
         // }
 
-        return UserResource::collection($users);
+        // return UserResource::collection($users);
         // return response()->json([
         //     'users' => $users
         // ]);
+
+        $sortField = request('sort_field', 'created_at');
+        if (!in_array($sortField, ['id', 'username', 'email', 'created_at'])) {
+            $sortField = 'created_at';
+        }
+        $sortDirection = request('sort_direction', 'desc');
+        if (!in_array($sortDirection, ['asc', 'desc'])) {
+            $sortDirection = 'desc';
+        }
+        $users = User::all();
+        return UserResource::collection($users);
     }
 
 
