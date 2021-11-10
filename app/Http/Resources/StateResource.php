@@ -18,6 +18,7 @@ class StateResource extends JsonResource
             'id' => $this->id,
             'country' => $this->country,
             'name' => $this->name,
+            'created_at' => $this->created_at,
         ];
     }
 }

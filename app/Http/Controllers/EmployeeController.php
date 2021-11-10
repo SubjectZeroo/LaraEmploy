@@ -18,15 +18,34 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        $employees = Employee::all();
-
-        if ($request->search) {
-
-            $employees = Employee::where('firts_name', "like", "%{$request->search}%")->get();
-        } elseif ($request->department_id) {
-
-            $employees = Employee::where('department_id', $request->department_id)->get();
+        $sortField = request('sort_field', 'created_at');
+        if (!in_array($sortField, ['firts_name', 'last_name', 'middle_name', 'department_id'])) {
+            $sortField = 'created_at';
         }
+        $sortDirection = request('sort_direction', 'desc');
+        if (!in_array($sortDirection, ['asc', 'desc'])) {
+            $sortDirection = 'desc';
+        }
+
+        $filled = array_filter(request()->only([
+            'firts_name',
+            'last_name',
+            'middle_name',
+            'department_id'
+        ]));
+
+        $employees = Employee::when(count($filled) > 0, function ($query) use ($filled) {
+            foreach ($filled as $column => $value) {
+                $query->where($column, 'LIKE', '%' . $value . '%');
+            }
+        })->when(request('search', '') != '', function ($query) {
+            $query->where(function ($q) {
+                $q->where('firts_name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('last_name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('middle_name', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('department_id', 'LIKE', '%' . request('search') . '%');
+            });
+        })->orderBy($sortField, $sortDirection)->paginate(10);
 
 
         return EmployeeResource::collection($employees);

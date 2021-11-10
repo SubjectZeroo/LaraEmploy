@@ -19,16 +19,6 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        // $users = User::all();
-
-        // if ($request->has('search')) {
-        //     $users = User::where('username', 'like', "%{$request->search}%")->orWhere('email', 'like', "%{$request->search}%")->get();
-        // }
-
-        // return UserResource::collection($users);
-        // return response()->json([
-        //     'users' => $users
-        // ]);
 
         $sortField = request('sort_field', 'created_at');
         if (!in_array($sortField, ['id', 'username', 'email', 'created_at'])) {
@@ -40,7 +30,7 @@ class UserController extends Controller
         }
 
         $filled = array_filter(request()->only([
-            // 'id',
+            'id',
             'username',
             'email',
             'created_at'
@@ -52,7 +42,8 @@ class UserController extends Controller
             }
         })->when(request('search', '') != '', function ($query) {
             $query->where(function ($q) {
-                $q->where('username', 'LIKE', '%' . request('search') . '%')
+                $q->where('id', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('username', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('email', 'LIKE', '%' . request('search') . '%')
                     ->orWhere('created_at', 'LIKE', '%' . request('search') . '%');
             });

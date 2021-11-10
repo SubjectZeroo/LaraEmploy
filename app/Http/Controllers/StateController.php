@@ -19,7 +19,30 @@ class StateController extends Controller
      */
     public function index()
     {
-        $states = State::all();
+        $sortField = request('sort_field', 'created_at');
+        if (!in_array($sortField, ['country_code', 'name'])) {
+            $sortField = 'created_at';
+        }
+        $sortDirection = request('sort_direction', 'desc');
+        if (!in_array($sortDirection, ['asc', 'desc'])) {
+            $sortDirection = 'desc';
+        }
+
+        $filled = array_filter(request()->only([
+            'country_code',
+            'name'
+        ]));
+
+        $states = State::when(count($filled) > 0, function ($query) use ($filled) {
+            foreach ($filled as $column => $value) {
+                $query->where($column, 'LIKE', '%' . $value . '%');
+            }
+        })->when(request('search', '') != '', function ($query) {
+            $query->where(function ($q) {
+                $q->where('country_code', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('name', 'LIKE', '%' . request('search') . '%');
+            });
+        })->orderBy($sortField, $sortDirection)->paginate(10);
 
         return StateResource::collection($states);
     }

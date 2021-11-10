@@ -11,6 +11,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -90,42 +108,64 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      countries: [],
-      showMessage: false,
-      message: "",
-      search: null
+      countries: {},
+      params: {
+        sort_field: "created_at",
+        sort_direction: "desc",
+        country_code: "",
+        name: ""
+      },
+      search: ""
     };
   },
+  mounted: function mounted() {
+    this.getResults();
+  },
   watch: {
-    search: function search() {
-      this.getCountries();
+    params: {
+      handler: function handler() {
+        this.getResults();
+      },
+      deep: true
+    },
+    search: function search(val, old) {
+      if (val.length >= 4 || old.length >= 4) {
+        this.getResults();
+      }
     }
   },
-  created: function created() {
-    this.getCountries();
-  },
   methods: {
-    getCountries: function getCountries() {
+    deleteCountry: function deleteCountry(id) {
       var _this = this;
 
-      axios.get("/api/countries", {
-        params: {
-          search: this.search
-        }
-      }).then(function (res) {
-        _this.countries = res.data.data;
-      })["catch"](function (error) {
-        console.log(error);
+      axios["delete"]("api/countries/" + id).then(function (res) {
+        _this.showMessage = true;
+        _this.message = res.data;
+
+        _this.getResults();
       });
     },
-    deleteCountry: function deleteCountry(id) {
+    change_sort: function change_sort(field) {
+      if (this.params.sort_field === field) {
+        this.params.sort_direction = this.params.sort_direction === "asc" ? "desc" : "asc";
+      } else {
+        this.params.sort_field = field;
+        this.params.sort_direction = "asc";
+      }
+    },
+    getResults: function getResults() {
       var _this2 = this;
 
-      axios["delete"]("api/countries/" + id).then(function (res) {
-        _this2.showMessage = true;
-        _this2.message = res.data;
-
-        _this2.getCountries();
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/countries", {
+        params: _objectSpread({
+          page: page,
+          search: this.search.length >= 4 ? this.search : ""
+        }, this.params)
+      }).then(function (response) {
+        _this2.countries = response.data;
+      })["catch"](function (error) {
+        console.log(error);
       });
     }
   }
@@ -220,8 +260,6 @@ var render = function() {
   return _c("div", [
     _vm._m(0),
     _vm._v(" "),
-    _c("div"),
-    _vm._v(" "),
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-header" }, [
         _c(
@@ -231,7 +269,27 @@ var render = function() {
               "d-flex justify-content-between justify-content-center align-items-center"
           },
           [
-            _vm._m(1),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search,
+                  expression: "search"
+                }
+              ],
+              staticClass: "form-control col-md-3",
+              attrs: { type: "text", placeholder: "Search" },
+              domProps: { value: _vm.search },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search = $event.target.value
+                }
+              }
+            }),
             _vm._v(" "),
             _c(
               "router-link",
@@ -247,62 +305,180 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table" }, [
-            _vm._m(2),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.countries, function(country) {
-                return _c("tr", { key: country.id }, [
-                  _c("th", [_vm._v("#" + _vm._s(country.id))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(country.country_code))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(country.name))]),
-                  _vm._v(" "),
-                  _c(
-                    "td",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: {
-                            to: {
-                              name: "CountriesEdit",
-                              params: { id: country.id }
-                            }
+        _c(
+          "div",
+          { staticClass: "table-responsive" },
+          [
+            _c("table", { staticClass: "table" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.change_sort("country_code")
                           }
-                        },
-                        [_vm._v("Edit")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger",
-                          on: {
-                            click: function($event) {
-                              return _vm.deleteCountry(country.id)
-                            }
+                        }
+                      },
+                      [_vm._v("Country Code")]
+                    ),
+                    _vm._v(" "),
+                    this.params.sort_field == "country_code" &&
+                    this.params.sort_direction == "asc"
+                      ? _c("span")
+                      : _vm._e(),
+                    _vm._v(" "),
+                    this.params.sort_field == "country_code" &&
+                    this.params.sort_direction == "desc"
+                      ? _c("span")
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("th", [
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.change_sort("name")
                           }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                        Delete\n                                    "
+                        }
+                      },
+                      [_vm._v("Name")]
+                    ),
+                    _vm._v(" "),
+                    this.params.sort_field == "name" &&
+                    this.params.sort_direction == "asc"
+                      ? _c("span")
+                      : _vm._e(),
+                    _vm._v(" "),
+                    this.params.sort_field == "name" &&
+                    this.params.sort_direction == "desc"
+                      ? _c("span")
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Actions")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("th", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.params.country_code,
+                          expression: "params.country_code"
+                        }
+                      ],
+                      staticClass: "form-control w-100",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.params.country_code },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.params,
+                            "country_code",
+                            $event.target.value
                           )
-                        ]
-                      )
-                    ],
-                    1
-                  )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("th", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.params.name,
+                          expression: "params.name"
+                        }
+                      ],
+                      staticClass: "form-control w-100",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.params.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.params, "name", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
                 ])
-              }),
-              0
-            )
-          ])
-        ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.countries.data, function(country) {
+                  return _c("tr", { key: country.id }, [
+                    _c("td", [_vm._v(_vm._s(country.country_code))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(country.name))]),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: {
+                              to: {
+                                name: "CountriesEdit",
+                                params: { id: country.id }
+                              }
+                            }
+                          },
+                          [_vm._v("Edit")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteCountry(country.id)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                                Delete\n                                            "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ])
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _c("pagination", {
+              attrs: { data: _vm.countries },
+              on: { "pagination-change-page": _vm.getResults }
+            })
+          ],
+          1
+        )
       ])
     ])
   ])
@@ -323,56 +499,6 @@ var staticRenderFns = [
         ])
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("form", { attrs: { method: "GET", action: "" } }, [
-      _c("div", { staticClass: "form-row align-items-center" }, [
-        _c("div", { staticClass: "col-auto" }, [
-          _c(
-            "label",
-            { staticClass: "sr-only", attrs: { for: "inlineFormInput" } },
-            [_vm._v("Name")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control mb-2",
-            attrs: {
-              type: "search",
-              name: "search",
-              id: "inlineFormInput",
-              placeholder: "Search by Name or Country Code"
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-auto" }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-primary mb-2", attrs: { type: "submit" } },
-            [_vm._v("Search")]
-          )
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Country Code")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
-      ])
-    ])
   }
 ]
 render._withStripped = true

@@ -115,19 +115,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       users: {},
       params: {
-        sort_field: 'created_at',
-        sort_direction: 'desc',
-        // id:'',
-        username: '',
-        email: '',
-        created_at: ''
+        sort_field: "created_at",
+        sort_direction: "desc",
+        id: '',
+        username: "",
+        email: "",
+        created_at: ""
       },
-      search: ''
+      search: ""
     };
   },
   mounted: function mounted() {
@@ -159,33 +181,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     change_sort: function change_sort(field) {
       if (this.params.sort_field === field) {
-        this.params.sort_direction = this.params.sort_direction === 'asc' ? 'desc' : 'asc';
+        this.params.sort_direction = this.params.sort_direction === "asc" ? "desc" : "asc";
       } else {
         this.params.sort_field = field;
-        this.params.sort_direction = 'asc';
-      } // this.getResults();
-
+        this.params.sort_direction = "asc";
+      }
     },
-    // getResults(page = 1) {
-    //     axios
-    //         .get('/api/users?page=' + page
-    //         + '&sort_field=' + this.sort_field
-    //         + '&sort_direction=' + this.sort_direction)
-    //         .then(response => {
-    //             this.users = res.data.data;
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         });
-    // }
     getResults: function getResults() {
       var _this2 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get('/api/users', {
+      axios.get("/api/users", {
         params: _objectSpread({
           page: page,
-          search: this.search.length >= 4 ? this.search : ''
+          search: this.search.length >= 4 ? this.search : ""
         }, this.params)
       }).then(function (response) {
         _this2.users = response.data;
@@ -346,6 +355,32 @@ var render = function() {
                       on: {
                         click: function($event) {
                           $event.preventDefault()
+                          return _vm.change_sort("id")
+                        }
+                      }
+                    },
+                    [_vm._v("ID")]
+                  ),
+                  _vm._v(" "),
+                  this.params.sort_field == "id" &&
+                  this.params.sort_direction == "asc"
+                    ? _c("span")
+                    : _vm._e(),
+                  _vm._v(" "),
+                  this.params.sort_field == "id" &&
+                  this.params.sort_direction == "desc"
+                    ? _c("span")
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("th", [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
                           return _vm.change_sort("username")
                         }
                       }
@@ -426,6 +461,30 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
+                        value: _vm.params.id,
+                        expression: "params.id"
+                      }
+                    ],
+                    staticClass: "form-input w-100",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.params.id },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.params, "id", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("th", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
                         value: _vm.params.username,
                         expression: "params.username"
                       }
@@ -498,6 +557,8 @@ var render = function() {
               "tbody",
               _vm._l(_vm.users.data, function(user) {
                 return _c("tr", { key: user.id }, [
+                  _c("td", [_vm._v("#" + _vm._s(user.id))]),
+                  _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(user.username))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(user.email))]),
@@ -533,7 +594,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                                        Delete\n                                    "
+                            "\n                                Delete\n                            "
                           )
                         ]
                       )

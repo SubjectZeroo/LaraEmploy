@@ -19,7 +19,28 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::all();
+        $sortField = request('sort_field', 'created_at');
+        if (!in_array($sortField, ['name'])) {
+            $sortField = 'created_at';
+        }
+        $sortDirection = request('sort_direction', 'desc');
+        if (!in_array($sortDirection, ['asc', 'desc'])) {
+            $sortDirection = 'desc';
+        }
+
+        $filled = array_filter(request()->only([
+            'name'
+        ]));
+
+        $departments = Department::when(count($filled) > 0, function ($query) use ($filled) {
+            foreach ($filled as $column => $value) {
+                $query->where($column, 'LIKE', '%' . $value . '%');
+            }
+        })->when(request('search', '') != '', function ($query) {
+            $query->where(function ($q) {
+                $q->where('name', 'LIKE', '%' . request('search') . '%');
+            });
+        })->orderBy($sortField, $sortDirection)->paginate(10);
         return DepartmentResource::collection($departments);
     }
 
