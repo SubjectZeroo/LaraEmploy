@@ -38,7 +38,26 @@ class UserController extends Controller
         if (!in_array($sortDirection, ['asc', 'desc'])) {
             $sortDirection = 'desc';
         }
-        $users = User::all();
+
+        $filled = array_filter(request()->only([
+            // 'id',
+            'username',
+            'email',
+            'created_at'
+        ]));
+
+        $users = User::when(count($filled) > 0, function ($query) use ($filled) {
+            foreach ($filled as $column => $value) {
+                $query->where($column, 'LIKE', '%' . $value . '%');
+            }
+        })->when(request('search', '') != '', function ($query) {
+            $query->where(function ($q) {
+                $q->where('username', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('email', 'LIKE', '%' . request('search') . '%')
+                    ->orWhere('created_at', 'LIKE', '%' . request('search') . '%');
+            });
+        })->orderBy($sortField, $sortDirection)->paginate(10);
+
         return UserResource::collection($users);
     }
 
