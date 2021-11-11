@@ -13,24 +13,25 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between justify-content-center align-items-center">
-                <form method="GET" action="">
-                    <div class="form-row align-items-center">
-                      <div class="col-auto">
-                        <label class="sr-only" for="inlineFormInput">Name</label>
-                        <input type="search" name="search" class="form-control mb-2" id="inlineFormInput" placeholder="Search by Name or Country Code">
-                      </div>
-                      <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mb-2">Search</button>
-                      </div>
-                    </div>
-                </form>
+                <input
+                                type="text"
+                                class="form-control col-md-3"
+                                placeholder="Search"
+                                v-model.lazy="search"
+                />
                 <router-link
                         :to="{ name: 'CitiesCreate' }"
                         class="float-right btn btn-primary"
                         >Create City</router-link
                     >
             </div>
-
+            <div class="col-1">
+                 <select v-model="paginate" class="form-control form-control-sm">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                </select>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -44,24 +45,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- @foreach ($cities as $city)
-                          <tr>
-                              <th>{{ $city->id }}</th>
-                              <td>{{ $city->state->name }}</td>
-                              <td>{{ $city->name }}</td>
-                              <td class="d-flex ">
-                                <a href="{{ route('cities.edit', $city->id) }}" class="btn btn-success mr-3">
-                                    <i class="far fa-edit"></i>
-                                </a>
-                                <form method="POST" action="{{ route('cities.destroy', $city->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                </form>
-                              </td>
-                          </tr>
-                      @endforeach -->
-                      <tr v-for="city in cities"
+                      <tr v-for="city in cities.data"
                             :key="city.id">
                                 <th>#{{ city.id }}</th>
                                 <td>{{ city.state.name }}</td>
@@ -85,6 +69,10 @@
                             </tr>
                     </tbody>
                 </table>
+                <pagination
+                        :data="cities"
+                        @pagination-change-page="getCities"
+                        ></pagination>
             </div>
         </div>
     </div>
@@ -95,30 +83,34 @@
 export default {
     data() {
         return {
-            cities: [],
-            showMessage: false,
-            message: "",
-            search: null,
+            cities: {},
+            paginate: 10,
+            search: "",
+            params: {
+                sort_field: "created_at",
+                sort_direction: "desc",
+            }
         };
     },
+     mounted() {
+        this.getCities();
+    },
     watch: {
-        search() {
+        paginate: function(value) {
+            this.getCities();
+        },
+        search: function (value) {
             this.getCities();
         }
     },
-    created() {
-        this.getCities();
-    },
     methods: {
-        getCities() {
+        getCities(page = 1) {
             axios
-                .get("/api/cities", {
-                    params: {
-                        search: this.search,
-                    }
-                })
-                .then(res => {
-                    this.cities = res.data.data;
+                .get("/api/cities?page=" + page
+                + '&paginate=' + this.paginate
+                + '&q=' + this.search)
+                .then(response => {
+                    this.cities = response.data;
                 })
                 .catch(error => {
                     console.log(error);

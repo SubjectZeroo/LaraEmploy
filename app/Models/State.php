@@ -23,4 +23,16 @@ class State extends Model
     {
         return $this->hasMany(City::class);
     }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+
+        $query->where(function ($query) use ($term) {
+            $query->where('name', 'like', $term)
+                ->orWhereHas('country', function ($query) use ($term) {
+                    $query->where('name', 'like', $term);
+                });
+        });
+    }
 }

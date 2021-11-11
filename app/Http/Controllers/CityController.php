@@ -19,30 +19,20 @@ class CityController extends Controller
      */
     public function index(Request $request)
     {
-        $sortField = request('sort_field', 'created_at');
-        if (!in_array($sortField, ['state_id', 'name'])) {
-            $sortField = 'created_at';
-        }
-        $sortDirection = request('sort_direction', 'desc');
-        if (!in_array($sortDirection, ['asc', 'desc'])) {
-            $sortDirection = 'desc';
-        }
+        // $sortField = request('sort_field', 'created_at');
+        // if (!in_array($sortField, ['state_id', 'name'])) {
+        //     $sortField = 'created_at';
+        // }
+        // $sortDirection = request('sort_direction', 'desc');
+        // if (!in_array($sortDirection, ['asc', 'desc'])) {
+        //     $sortDirection = 'desc';
+        // }
+        $paginate = request('paginate', 10);
+        $search_term = request('q', '');
 
-        $filled = array_filter(request()->only([
-            'state_id',
-            'name'
-        ]));
-
-        $cities = City::when(count($filled) > 0, function ($query) use ($filled) {
-            foreach ($filled as $column => $value) {
-                $query->where($column, 'LIKE', '%' . $value . '%');
-            }
-        })->when(request('search', '') != '', function ($query) {
-            $query->where(function ($q) {
-                $q->where('state_id', 'LIKE', '%' . request('search') . '%')
-                    ->orWhere('name', 'LIKE', '%' . request('search') . '%');
-            });
-        })->orderBy($sortField, $sortDirection)->paginate(10);
+        $cities = City::with(['state'])
+            ->search(trim($search_term))
+            ->paginate($paginate);
 
         return CityResource::collection($cities);
     }

@@ -17,25 +17,33 @@
                                 type="text"
                                 class="form-control col-md-3"
                                 placeholder="Search"
-                                v-model="search"
+                                v-model.lazy="search"
                 />
+
                 <router-link
                         :to="{ name: 'StatesCreate' }"
                         class="float-right btn btn-primary"
                         >Create State</router-link
                     >
             </div>
+            <div class="col-1">
+                 <select v-model="paginate" class="form-control form-control-sm">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                </select>
+            </div>
 
         </div>
         <div class="card-body">
-            <div class="table-responsive">
+
                 <table class="table">
                     <thead>
                        <tr>
                                             <th>
-                                                <a href="#" @click.prevent="change_sort('country_code')">Country</a>
-                                                <span v-if="this.params.sort_field == 'country_code' && this.params.sort_direction == 'asc'"></span>
-                                                <span v-if="this.params.sort_field == 'country_code' && this.params.sort_direction == 'desc'"></span>
+                                                <a href="#" @click.prevent="change_sort('country')">Country</a>
+                                                <span v-if="this.params.sort_field == 'country' && this.params.sort_direction == 'asc'"></span>
+                                                <span v-if="this.params.sort_field == 'country' && this.params.sort_direction == 'desc'"></span>
                                             </th>
                                             <th>
                                                 <a href="#" @click.prevent="change_sort('name')">Name</a>
@@ -44,12 +52,12 @@
                                             </th>
                                             <th>Actions</th>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                         <th>
                                             <input
                                                 type="text"
                                                 class="form-control w-100"
-                                                v-model="params.country_code">
+                                                v-model="params.country">
                                         </th>
                                         <th>
                                             <input
@@ -58,13 +66,13 @@
                                                 v-model="params.name"
                                             />
                                         </th>
-                                    </tr>
+                                    </tr> -->
                     </thead>
                     <tbody>
                     <tr v-for="state in states.data"
                             :key="state.id">
 
-                                <td>{{ state.country.country_code }}</td>
+                                <td>{{ state.country }}</td>
                                 <td>{{ state.name }}</td>
                                 <td>
                                     <router-link
@@ -86,10 +94,9 @@
                     </tbody>
                 </table>
                  <pagination
-                                :data="states"
-                                @pagination-change-page="getResults"
+                        :data="states"
+                        @pagination-change-page="getStates"
                         ></pagination>
-            </div>
         </div>
     </div>
     </div>
@@ -100,63 +107,52 @@ export default {
     data() {
         return {
             states: {},
+            paginate: 10,
+            search: "",
             params: {
                 sort_field: "created_at",
                 sort_direction: "desc",
-                country: "",
-                name: ""
-            },
-            search: ""
+            }
         };
     },
     mounted() {
-        this.getResults();
+        this.getStates();
     },
-     watch: {
-        params: {
-            handler() {
-                this.getResults();
-            },
-            deep: true
+    watch: {
+        paginate: function(value) {
+            this.getStates();
         },
-        search(val, old) {
-            if (val.length >= 4 || old.length >= 4) {
-                this.getResults();
-            }
+        search: function (value) {
+            this.getStates();
         }
     },
     methods: {
-        getResults(page = 1) {
-            axios
-                .get("/api/states", {
-                    params: {
-                        page,
-                        search: this.search.length >= 4 ? this.search : "",
-                        ...this.params
-                    }
-                })
-                .then(response => {
-                    this.states = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+
+        getStates(page = 1) {
+            axios.get('api/states?page='+ page
+            + '&paginate=' + this.paginate
+            + '&q=' + this.search
+
+            )
+            .then(response => {
+                this.states = response.data;
+            });
         },
-        change_sort(field) {
-            if (this.params.sort_field === field) {
-                this.params.sort_direction =
-                    this.params.sort_direction === "asc" ? "desc" : "asc";
-            } else {
-                this.params.sort_field = field;
-                this.params.sort_direction = "asc";
-            }
-        },
+        // change_sort(field) {
+        //     if (this.params.sort_field === field) {
+        //         this.params.sort_direction =
+        //             this.params.sort_direction === "asc" ? "desc" : "asc";
+        //     } else {
+        //         this.params.sort_field = field;
+        //         this.params.sort_direction = "asc";
+        //     }
+        // },
         deleteStates(id) {
 
             axios.delete("api/states/" + id).then(res => {
                 this.showMessage = true;
                 this.message = res.data;
-                this.getResults();
+                this.getStates();
             });
         }
     }

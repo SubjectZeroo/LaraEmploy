@@ -18,4 +18,16 @@ class City extends Model
     {
         return $this->belongsTo(State::class);
     }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+
+        $query->where(function ($query) use ($term) {
+            $query->where('name', 'like', $term)
+                ->orWhereHas('state', function ($query) use ($term) {
+                    $query->where('name', 'like', $term);
+                });
+        });
+    }
 }

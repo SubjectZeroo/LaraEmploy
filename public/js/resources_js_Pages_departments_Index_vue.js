@@ -84,33 +84,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      departments: [],
-      showMessage: false,
-      message: "",
-      search: null
+      departments: {},
+      paginate: 10,
+      search: "",
+      params: {
+        sort_field: "created_at",
+        sort_direction: "desc"
+      }
     };
   },
+  mounted: function mounted() {
+    this.getDepartments();
+  },
   watch: {
-    search: function search() {
+    paginate: function paginate(value) {
+      this.getDepartments();
+    },
+    search: function search(value) {
       this.getDepartments();
     }
-  },
-  created: function created() {
-    this.getDepartments();
   },
   methods: {
     getDepartments: function getDepartments() {
       var _this = this;
 
-      axios.get("/api/departments", {
-        params: {
-          search: this.search
-        }
-      }).then(function (res) {
-        _this.departments = res.data.data;
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/departments?page=" + page + '&paginate=' + this.paginate + '&q=' + this.search).then(function (res) {
+        _this.departments = res.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -228,7 +237,25 @@ var render = function() {
               "d-flex justify-content-between justify-content-center align-items-center"
           },
           [
-            _vm._m(1),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model.lazy",
+                  value: _vm.search,
+                  expression: "search",
+                  modifiers: { lazy: true }
+                }
+              ],
+              staticClass: "form-control col-md-3",
+              attrs: { type: "text", placeholder: "Search" },
+              domProps: { value: _vm.search },
+              on: {
+                change: function($event) {
+                  _vm.search = $event.target.value
+                }
+              }
+            }),
             _vm._v(" "),
             _c(
               "router-link",
@@ -240,64 +267,113 @@ var render = function() {
             )
           ],
           1
-        )
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-1" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.paginate,
+                  expression: "paginate"
+                }
+              ],
+              staticClass: "form-control form-control-sm",
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.paginate = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c("option", { attrs: { value: "10" } }, [_vm._v("10")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "20" } }, [_vm._v("20")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "30" } }, [_vm._v("30")])
+            ]
+          )
+        ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table" }, [
-            _vm._m(2),
+        _c(
+          "div",
+          { staticClass: "table-responsive" },
+          [
+            _c("table", { staticClass: "table" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.departments.data, function(deparment) {
+                  return _c("tr", { key: deparment.id }, [
+                    _c("th", [_vm._v("#" + _vm._s(deparment.id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(deparment.name))]),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: {
+                              to: {
+                                name: "DepartmentsEdit",
+                                params: { id: deparment.id }
+                              }
+                            }
+                          },
+                          [_vm._v("Edit")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteDepartment(deparment.id)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Delete\n                                "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ])
+                }),
+                0
+              )
+            ]),
             _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.departments, function(deparment) {
-                return _c("tr", { key: deparment.id }, [
-                  _c("th", [_vm._v("#" + _vm._s(deparment.id))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(deparment.name))]),
-                  _vm._v(" "),
-                  _c(
-                    "td",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: {
-                            to: {
-                              name: "DepartmentsEdit",
-                              params: { id: deparment.id }
-                            }
-                          }
-                        },
-                        [_vm._v("Edit")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger",
-                          on: {
-                            click: function($event) {
-                              return _vm.deleteDepartment(deparment.id)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                    Delete\n                                "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ])
-              }),
-              0
-            )
-          ])
-        ])
+            _c("pagination", {
+              attrs: { data: _vm.departments },
+              on: { "pagination-change-page": _vm.getDepartments }
+            })
+          ],
+          1
+        )
       ])
     ])
   ])
@@ -318,40 +394,6 @@ var staticRenderFns = [
         ])
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("form", [
-      _c("div", { staticClass: "form-row align-items-center" }, [
-        _c("div", { staticClass: "col-auto" }, [
-          _c(
-            "label",
-            { staticClass: "sr-only", attrs: { for: "inlineFormInput" } },
-            [_vm._v("Name")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control mb-2",
-            attrs: {
-              type: "search",
-              name: "search",
-              id: "inlineFormInput",
-              placeholder: "Search by Name or Country Code"
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-auto" }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-primary mb-2", attrs: { type: "submit" } },
-            [_vm._v("Search")]
-          )
-        ])
-      ])
-    ])
   },
   function() {
     var _vm = this

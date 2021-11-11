@@ -20,13 +20,11 @@ class EmployeeResource extends JsonResource
             'last_name' => $this->last_name,
             'middle_name' => $this->middle_name,
             'address' => $this->address,
-            'department' => $this->department,
-            'country' => $this->country,
-            'state' => $this->state,
-            'city' => $this->city,
+            'department' => $this->department->name,
             'zip_code' => $this->zip_code,
             'birthdate' => $this->birthdate,
             'date_hired' => $this->date_hired,
+            'created_at' => $this->created_at,
         ];
     }
 }

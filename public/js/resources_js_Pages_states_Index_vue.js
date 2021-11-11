@@ -11,12 +11,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -118,55 +119,43 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       states: {},
+      paginate: 10,
+      search: "",
       params: {
         sort_field: "created_at",
-        sort_direction: "desc",
-        country: "",
-        name: ""
-      },
-      search: ""
+        sort_direction: "desc"
+      }
     };
   },
   mounted: function mounted() {
-    this.getResults();
+    this.getStates();
   },
   watch: {
-    params: {
-      handler: function handler() {
-        this.getResults();
-      },
-      deep: true
+    paginate: function paginate(value) {
+      this.getStates();
     },
-    search: function search(val, old) {
-      if (val.length >= 4 || old.length >= 4) {
-        this.getResults();
-      }
+    search: function search(value) {
+      this.getStates();
     }
   },
   methods: {
-    getResults: function getResults() {
+    getStates: function getStates() {
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get("/api/states", {
-        params: _objectSpread({
-          page: page,
-          search: this.search.length >= 4 ? this.search : ""
-        }, this.params)
-      }).then(function (response) {
+      axios.get('api/states?page=' + page + '&paginate=' + this.paginate + '&q=' + this.search).then(function (response) {
         _this.states = response.data;
-      })["catch"](function (error) {
-        console.log(error);
       });
     },
-    change_sort: function change_sort(field) {
-      if (this.params.sort_field === field) {
-        this.params.sort_direction = this.params.sort_direction === "asc" ? "desc" : "asc";
-      } else {
-        this.params.sort_field = field;
-        this.params.sort_direction = "asc";
-      }
-    },
+    // change_sort(field) {
+    //     if (this.params.sort_field === field) {
+    //         this.params.sort_direction =
+    //             this.params.sort_direction === "asc" ? "desc" : "asc";
+    //     } else {
+    //         this.params.sort_field = field;
+    //         this.params.sort_direction = "asc";
+    //     }
+    // },
     deleteStates: function deleteStates(id) {
       var _this2 = this;
 
@@ -174,7 +163,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this2.showMessage = true;
         _this2.message = res.data;
 
-        _this2.getResults();
+        _this2.getStates();
       });
     }
   }
@@ -284,19 +273,17 @@ var render = function() {
               directives: [
                 {
                   name: "model",
-                  rawName: "v-model",
+                  rawName: "v-model.lazy",
                   value: _vm.search,
-                  expression: "search"
+                  expression: "search",
+                  modifiers: { lazy: true }
                 }
               ],
               staticClass: "form-control col-md-3",
               attrs: { type: "text", placeholder: "Search" },
               domProps: { value: _vm.search },
               on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
+                change: function($event) {
                   _vm.search = $event.target.value
                 }
               }
@@ -312,185 +299,168 @@ var render = function() {
             )
           ],
           1
-        )
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-1" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.paginate,
+                  expression: "paginate"
+                }
+              ],
+              staticClass: "form-control form-control-sm",
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.paginate = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c("option", { attrs: { value: "10" } }, [_vm._v("10")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "20" } }, [_vm._v("20")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "30" } }, [_vm._v("30")])
+            ]
+          )
+        ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "div",
-          { staticClass: "table-responsive" },
-          [
-            _c("table", { staticClass: "table" }, [
-              _c("thead", [
-                _c("tr", [
-                  _c("th", [
-                    _c(
-                      "a",
-                      {
-                        attrs: { href: "#" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.change_sort("country_code")
-                          }
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        [
+          _c("table", { staticClass: "table" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.change_sort("country")
                         }
-                      },
-                      [_vm._v("Country")]
-                    ),
-                    _vm._v(" "),
-                    this.params.sort_field == "country_code" &&
-                    this.params.sort_direction == "asc"
-                      ? _c("span")
-                      : _vm._e(),
-                    _vm._v(" "),
-                    this.params.sort_field == "country_code" &&
-                    this.params.sort_direction == "desc"
-                      ? _c("span")
-                      : _vm._e()
-                  ]),
+                      }
+                    },
+                    [_vm._v("Country")]
+                  ),
                   _vm._v(" "),
-                  _c("th", [
-                    _c(
-                      "a",
-                      {
-                        attrs: { href: "#" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.change_sort("name")
-                          }
-                        }
-                      },
-                      [_vm._v("Name")]
-                    ),
-                    _vm._v(" "),
-                    this.params.sort_field == "name" &&
-                    this.params.sort_direction == "asc"
-                      ? _c("span")
-                      : _vm._e(),
-                    _vm._v(" "),
-                    this.params.sort_field == "name" &&
-                    this.params.sort_direction == "desc"
-                      ? _c("span")
-                      : _vm._e()
-                  ]),
+                  this.params.sort_field == "country" &&
+                  this.params.sort_direction == "asc"
+                    ? _c("span")
+                    : _vm._e(),
                   _vm._v(" "),
-                  _c("th", [_vm._v("Actions")])
+                  this.params.sort_field == "country" &&
+                  this.params.sort_direction == "desc"
+                    ? _c("span")
+                    : _vm._e()
                 ]),
                 _vm._v(" "),
-                _c("tr", [
-                  _c("th", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.params.country_code,
-                          expression: "params.country_code"
-                        }
-                      ],
-                      staticClass: "form-control w-100",
-                      attrs: { type: "text" },
-                      domProps: { value: _vm.params.country_code },
+                _c("th", [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
                       on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.params,
-                            "country_code",
-                            $event.target.value
-                          )
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.change_sort("name")
                         }
                       }
-                    })
-                  ]),
+                    },
+                    [_vm._v("Name")]
+                  ),
                   _vm._v(" "),
-                  _c("th", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.params.name,
-                          expression: "params.name"
-                        }
-                      ],
-                      staticClass: "form-control w-100",
-                      attrs: { type: "text" },
-                      domProps: { value: _vm.params.name },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.params, "name", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.states.data, function(state) {
-                  return _c("tr", { key: state.id }, [
-                    _c("td", [_vm._v(_vm._s(state.country.country_code))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(state.name))]),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      [
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "btn btn-primary",
-                            attrs: {
-                              to: {
-                                name: "StatesEdit",
-                                params: { id: state.id }
-                              }
-                            }
-                          },
-                          [_vm._v("Edit")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-danger",
-                            on: {
-                              click: function($event) {
-                                return _vm.deleteState(state.id)
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    Delete\n                                "
-                            )
-                          ]
-                        )
-                      ],
-                      1
-                    )
-                  ])
-                }),
-                0
-              )
+                  this.params.sort_field == "name" &&
+                  this.params.sort_direction == "asc"
+                    ? _c("span")
+                    : _vm._e(),
+                  _vm._v(" "),
+                  this.params.sort_field == "name" &&
+                  this.params.sort_direction == "desc"
+                    ? _c("span")
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Actions")])
+              ])
             ]),
             _vm._v(" "),
-            _c("pagination", {
-              attrs: { data: _vm.states },
-              on: { "pagination-change-page": _vm.getResults }
-            })
-          ],
-          1
-        )
-      ])
+            _c(
+              "tbody",
+              _vm._l(_vm.states.data, function(state) {
+                return _c("tr", { key: state.id }, [
+                  _c("td", [_vm._v(_vm._s(state.country))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(state.name))]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            to: {
+                              name: "StatesEdit",
+                              params: { id: state.id }
+                            }
+                          }
+                        },
+                        [_vm._v("Edit")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteState(state.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    Delete\n                                "
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("pagination", {
+            attrs: { data: _vm.states },
+            on: { "pagination-change-page": _vm.getStates }
+          })
+        ],
+        1
+      )
     ])
   ])
 }

@@ -13,23 +13,25 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between justify-content-center align-items-center">
-                    <form>
-                        <div class="form-row align-items-center">
-                        <div class="col-auto">
-                            <label class="sr-only" for="inlineFormInput">Name</label>
-                            <input type="search" name="search" class="form-control mb-2" id="inlineFormInput" placeholder="Search by Name or Country Code">
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary mb-2">Search</button>
-                        </div>
-                        </div>
-                    </form>
+                    <input
+                                type="text"
+                                class="form-control col-md-3"
+                                placeholder="Search"
+                                v-model.lazy="search"
+                />
                     <router-link
                         :to="{ name: 'DepartmentsCreate' }"
                         class="float-right btn btn-primary"
                         >Create Department</router-link
                     >
                 </div>
+                <div class="col-1">
+                 <select v-model="paginate" class="form-control form-control-sm">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                </select>
+            </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -42,7 +44,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="deparment in departments"
+                        <tr v-for="deparment in departments.data"
                             :key="deparment.id">
                                 <th>#{{ deparment.id }}</th>
                                 <td>{{ deparment.name }}</td>
@@ -65,6 +67,10 @@
                             </tr>
                         </tbody>
                     </table>
+                    <pagination
+                        :data="departments"
+                        @pagination-change-page="getDepartments"
+                        ></pagination>
                 </div>
             </div>
         </div>
@@ -75,30 +81,34 @@
 export default {
     data() {
         return {
-            departments: [],
-            showMessage: false,
-            message: "",
-            search: null,
+            departments: {},
+            paginate: 10,
+            search: "",
+            params: {
+                sort_field: "created_at",
+                sort_direction: "desc",
+            }
         };
     },
-    watch: {
-        search() {
+    mounted() {
+        this.getDepartments();
+    },
+     watch: {
+        paginate: function(value) {
+            this.getDepartments();
+        },
+        search: function (value) {
             this.getDepartments();
         }
     },
-    created() {
-        this.getDepartments();
-    },
     methods: {
-        getDepartments() {
+        getDepartments(page = 1) {
             axios
-                .get("/api/departments", {
-                    params: {
-                        search: this.search,
-                    }
-                })
+                .get("/api/departments?page=" + page
+                + '&paginate=' + this.paginate
+                + '&q=' + this.search)
                 .then(res => {
-                    this.departments = res.data.data;
+                    this.departments = res.data;
                 })
                 .catch(error => {
                     console.log(error);

@@ -28,18 +28,36 @@ class Employee extends Model
         'date_hired' => 'datetime:Y-m-d',
     ];
 
-    public function country() {
+    public function country()
+    {
         return $this->belongsTo(Country::class);
     }
 
-    public function state() {
+    public function state()
+    {
         return $this->belongsTo(State::class);
     }
 
-    public function city() {
+    public function city()
+    {
         return $this->belongsTo(City::class);
     }
-    public function department() {
+    public function department()
+    {
         return $this->belongsTo(Department::class);
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+
+        $query->where(function ($query) use ($term) {
+            $query->where('firts_name', 'like', $term)
+                ->orWhere('last_name', 'like', $term)
+                ->orWhere('address ', 'like', $term)
+                ->orWhereHas('department', function ($query) use ($term) {
+                    $query->where('name', 'like', $term);
+                });
+        });
     }
 }
