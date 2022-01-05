@@ -105,7 +105,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'sidebar'
 });
@@ -360,12 +359,11 @@ var staticRenderFns = [
       },
       [
         _c("div", { staticClass: "sidebar-brand-icon rotate-n-15" }, [
-          _c("i", { staticClass: "fas fa-laugh-wink" })
+          _c("i", { staticClass: "fas fa-briefcase" })
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "sidebar-brand-text mx-3" }, [
-          _vm._v("SB Admin "),
-          _c("sup", [_vm._v("2")])
+          _vm._v("LaraEmployees")
         ])
       ]
     )

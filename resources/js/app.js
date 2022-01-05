@@ -10,7 +10,9 @@ import App from './App.vue'
 import { BootstrapVue } from 'bootstrap-vue'
 
 Vue.use(VueRouter)
+
 Vue.component('pagination', require('laravel-vue-pagination'));
+
 
 const app = new Vue({
   el: '#app',
